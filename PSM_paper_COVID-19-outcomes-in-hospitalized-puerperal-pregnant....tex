@@ -1,0 +1,2883 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={COVID-19 outcomes in hospitalized puerperal, pregnant, and neither pregnant nor puerperal women: a population study},
+  pdfauthor={Codes and outputs of Propensity Score Matching},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+
+\title{COVID-19 outcomes in hospitalized puerperal, pregnant, and neither
+pregnant nor puerperal women: a population study}
+\author{Codes and outputs of Propensity Score Matching}
+\date{08/26/2021}
+
+\begin{document}
+\maketitle
+
+\hypertarget{description}{%
+\section{1. Description}\label{description}}
+
+This file presents the documentation of the analysis of Propensity
+Scoring Method (PSM) of the article ``COVID-19 outcomes in hospitalized
+puerperal, pregnant, and neither pregnant nor puerperal women: a
+population study'' with authors Fabiano Elisei Serra, Rossana Pulcineli
+Vieira Francisco, Patricia de Rossi, Maria de Lourdes Brizot, and Agatha
+Sacramento Rodrigues.
+
+\hypertarget{r-packages-used-functions-and-dataset-import}{%
+\section{2. R packages used, functions and dataset
+import}\label{r-packages-used-functions-and-dataset-import}}
+
+The data are analyzed using the free-software R
+(\url{https://www.R-project.org}) in version 4.0.3. Next, we present and
+load the libraries used in the data analysis process.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#load packages}
+\NormalTok{loadlibrary <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x) \{}
+  \ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{require}\NormalTok{(x, }\DataTypeTok{character.only =} \OtherTok{TRUE}\NormalTok{)) \{}
+    \KeywordTok{install.packages}\NormalTok{(x, }\DataTypeTok{dependencies =}\NormalTok{ T)}
+    \ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{require}\NormalTok{(x, }\DataTypeTok{character.only =} \OtherTok{TRUE}\NormalTok{))}
+      \KeywordTok{stop}\NormalTok{(}\StringTok{"Package not found"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\NormalTok{packages <-}
+\StringTok{  }\KeywordTok{c}\NormalTok{(}
+    \StringTok{"readr"}\NormalTok{,}
+    \StringTok{"magrittr"}\NormalTok{,}
+    \StringTok{"dplyr"}\NormalTok{,}
+    \StringTok{"stringr"}\NormalTok{,}
+    \StringTok{"questionr"}\NormalTok{,}
+    \StringTok{"knitr"}\NormalTok{,}
+    \StringTok{"forcats"}\NormalTok{,}
+    \StringTok{"lubridate"}\NormalTok{,}
+    \StringTok{"summarytools"}\NormalTok{,}
+    \StringTok{"modelsummary"}\NormalTok{,}
+    \StringTok{"kableExtra"}\NormalTok{,}
+    \StringTok{"epitools"}\NormalTok{,}
+    \StringTok{"WeightIt"}\NormalTok{,}
+    \StringTok{"jtools"}\NormalTok{,}
+    \StringTok{"survey"}\NormalTok{,}
+    \StringTok{"cobalt"}\NormalTok{,}
+    \StringTok{"nnet"}
+\NormalTok{  )}
+\KeywordTok{lapply}\NormalTok{(packages, loadlibrary)}
+\end{Highlighting}
+\end{Shaded}
+
+The Influenza Epidemiological Surveillance Information System,
+SIVEP-Gripe (Sistema de Informação de Vigilância Epidemiológica da
+Gripe), is a nationwide surveillance database used to monitor severe
+acute respiratory infections in Brazil.
+
+Notification is mandatory for Influenza Syndrome (characterized by at
+least two of the following signs and symptoms: fever, even if referred,
+chills, sore throat, headache, cough, runny nose, olfactory or taste
+disorders) and who has dyspnea/respiratory discomfort or persistent
+pressure in the chest or O2 saturation less than 95\% in room air or
+bluish color of the lips or face. Asymptomatic individuals with
+laboratory confirmation by molecular biology or immunological
+examination for COVID-19 infection are also reported.
+
+For notifications in Sivep-Gripe, hospitalized cases in both public and
+private hospitals and all deaths due to severe acute respiratory
+infections regardless of hospitalization must be considered.
+
+The analyzed period comprised data from epidemiological weeks 1 to 53 of
+2020 (12/29/2019 - 01/02/2021) with the database downloaded on
+01/11/2021 on the site
+\url{https://opendatasus.saude.gov.br/dataset/bd-srag-2020}. The data
+are loaded below:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#loading the dataset}
+\NormalTok{data_all <-}\StringTok{ }\NormalTok{readr}\OperatorTok{::}\KeywordTok{read_delim}\NormalTok{(}
+  \StringTok{"INFLUD-11-01-2021.csv"}\NormalTok{,}
+  \StringTok{";"}\NormalTok{,}
+  \DataTypeTok{escape_double =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{locale =} \KeywordTok{locale}\NormalTok{(}\DataTypeTok{encoding =} \StringTok{"ISO-8859-2"}\NormalTok{),}
+  \DataTypeTok{trim_ws =} \OtherTok{TRUE}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+There are 1136681 cases in the complete dataset. The case selection is
+presented in the following according to the flowchart presented in the
+article.
+
+\hypertarget{case-selection-and-data-treatment}{%
+\section{3. Case selection and data
+treatment}\label{case-selection-and-data-treatment}}
+
+The first filter consists of selecting the hospitalized cases. For that,
+the \texttt{HOSPITAL} variable is considered, in which 1-Yes, 2-No, and
+9-Ignored.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Selecting only hospitalization cases}
+\NormalTok{data1 <-}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(data_all, HOSPITAL }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+When considering only confirmed hospitalized cases, we get 1061254
+observations.
+
+The second filtering consists of the cases classified as COVID-19 in the
+database. The variable indicating the classification is
+\texttt{CLASSI\_FIN}, with the following categories: 1-SRAG by
+influenza, 2-SRAG by another respiratory virus, 3-SRAG by another
+etiological agent, 4-SRAG not specified, and 5-SRAG by COVID-19.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data1}\OperatorTok{$}\NormalTok{CLASSI_FIN,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for case classification"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-3}Frequency table for case classification}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 2507 & 0.2\\
+\hline
+2 & 4137 & 0.4\\
+\hline
+3 & 2929 & 0.3\\
+\hline
+4 & 365992 & 34.5\\
+\hline
+5 & 588711 & 55.5\\
+\hline
+NA & 96978 & 9.1\\
+\hline
+Total & 1061254 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Filtering COVID-19 cases}
+\NormalTok{data2 <-}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(data1, CLASSI_FIN }\OperatorTok{==}\StringTok{ }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+There are 588711 selected cases for now.
+
+Only cases of COVID-19 confirmed by RT-PCR are selected. The selection
+is made as follows:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Selecting COVID-19 confirmed by RT-PCR}
+\NormalTok{data3 <-}\StringTok{ }\NormalTok{data2 }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{((PCR_SARS2 }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{) }\OperatorTok{|}
+\StringTok{                  }\NormalTok{(}
+\NormalTok{                    stringr}\OperatorTok{::}\KeywordTok{str_detect}\NormalTok{(DS_PCR_OUT, }\StringTok{"SARS|COVID|COV|CORONA|CIVID"}\NormalTok{) }\OperatorTok{&}
+\StringTok{                      }\OperatorTok{!}\NormalTok{stringr}\OperatorTok{::}\KeywordTok{str_detect}\NormalTok{(DS_PCR_OUT, }\StringTok{"63|43|229|HK|RINO|SINCI|PARE"}\NormalTok{)}
+\NormalTok{                  ) }\OperatorTok{|}
+\StringTok{                  }\NormalTok{(}
+\NormalTok{                    PCR_RESUL }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{&}
+\StringTok{                      }\NormalTok{CRITERIO }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{&}
+\StringTok{                      }\KeywordTok{is.na}\NormalTok{(DS_PCR_OUT) }\OperatorTok{&}
+\StringTok{                      }\NormalTok{(PCR_RINO  }\OperatorTok{!=}\StringTok{ }\DecValTok{1} \OperatorTok{|}
+\StringTok{                         }\KeywordTok{is.na}\NormalTok{(PCR_RINO)) }\OperatorTok{&}
+\StringTok{                      }\NormalTok{(POS_PCRFLU }\OperatorTok{!=}\StringTok{ }\DecValTok{1} \OperatorTok{|}\StringTok{ }\KeywordTok{is.na}\NormalTok{(POS_PCRFLU)) }\OperatorTok{&}
+\StringTok{                      }\NormalTok{(PCR_OUTRO }\OperatorTok{!=}\StringTok{ }\DecValTok{1} \OperatorTok{|}\StringTok{ }\KeywordTok{is.na}\NormalTok{(PCR_OUTRO)) }\OperatorTok{&}
+\StringTok{                      }\NormalTok{(POS_PCROUT }\OperatorTok{!=}\StringTok{ }\DecValTok{1} \OperatorTok{|}\StringTok{ }\KeywordTok{is.na}\NormalTok{(POS_PCROUT)) }\OperatorTok{&}
+\StringTok{                      }\NormalTok{(}\KeywordTok{is.na}\NormalTok{(PCR_VSR)) }\OperatorTok{&}
+\StringTok{                      }\NormalTok{(}\KeywordTok{is.na}\NormalTok{(PCR_METAP)) }\OperatorTok{&}
+\StringTok{                      }\NormalTok{(}\KeywordTok{is.na}\NormalTok{(PCR_PARA1))}
+\NormalTok{                  )}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+After this selection, 454830 cases are selected.
+
+The next step consists of selecting female cases. The sex variable is
+\texttt{CS\_SEXO}, in which F-Female, M-Male and I-Ignored.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data3}\OperatorTok{$}\NormalTok{CS_SEXO,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for sex"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-6}Frequency table for sex}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+F & 199931 & 44\\
+\hline
+I & 74 & 0\\
+\hline
+M & 254825 & 56\\
+\hline
+Total & 454830 & 100\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Filtering female cases}
+\NormalTok{data4 <-}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(data3, CS_SEXO }\OperatorTok{==}\StringTok{ "F"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Now there are 199931 cases. The next selection is to consider female
+people over 9 years old and under 50 (not inclusive). The variable that
+indicates the cases age is \texttt{NU\_IDADE\_N}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Filtering female people over 9 years old and under 50}
+\NormalTok{data5 <-}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(data4, NU_IDADE_N }\OperatorTok{>}\StringTok{ }\DecValTok{9} \OperatorTok{&}\StringTok{ }\NormalTok{NU_IDADE_N }\OperatorTok{<}\StringTok{ }\DecValTok{50}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The number of cases results in 50845 cases.
+
+Now we are going to identify pregnant people. For this, we will analyze
+the variable \texttt{CS\_GESTANT}. This variable assumes the values:
+1-1st gestational trimester; 2-2nd gestational trimester; 3-3rd
+gestational trimester; 4-Ignored gestational age; 5-No; 6-Does not
+apply; 9-Ignored.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data5}\OperatorTok{$}\NormalTok{CS_GESTANT,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for pregnancy variable"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-9}Frequency table for pregnancy variable}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+0 & 1 & 0.0\\
+\hline
+1 & 295 & 0.6\\
+\hline
+2 & 829 & 1.6\\
+\hline
+3 & 2089 & 4.1\\
+\hline
+4 & 159 & 0.3\\
+\hline
+5 & 37268 & 73.3\\
+\hline
+6 & 2056 & 4.0\\
+\hline
+9 & 8148 & 16.0\\
+\hline
+Total & 50845 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+The next step is filtering cases we have information about pregnancy
+(yes - any gestational age - or not).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Not considering do not apply and ignored}
+\NormalTok{data6 <-}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(data5, CS_GESTANT }\OperatorTok{>=}\StringTok{ }\DecValTok{1} \OperatorTok{&}\StringTok{ }\NormalTok{CS_GESTANT }\OperatorTok{<=}\StringTok{ }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+After the above filtering, we get 40640 observations.
+
+The pregnancy indicator variable (independent of the gestational period)
+is created below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Creating pregnancy indicator variable}
+\NormalTok{data6 <-}\StringTok{ }\NormalTok{data6 }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{gestante_SN =} \KeywordTok{ifelse}\NormalTok{(CS_GESTANT }\OperatorTok{==}\StringTok{ }\DecValTok{5}\NormalTok{, }\StringTok{"no"}\NormalTok{, }\StringTok{"yes"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{gestante_SN,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for pregnancy indicator"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-12}Frequency table for pregnancy indicator}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+no & 37268 & 91.7\\
+\hline
+yes & 3372 & 8.3\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+The next step is considering the postpartum indicator variable. The
+\texttt{PUERPERA} variable has three categories: 1-yes, 2-no, and
+9-Ignored.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{PUERPERA,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for postpartum indicator"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-13}Frequency table for postpartum indicator}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 983 & 2.4\\
+\hline
+2 & 12183 & 30.0\\
+\hline
+9 & 230 & 0.6\\
+\hline
+NA & 27244 & 67.0\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+Now we can create the group variable with the categories: preg - for
+pregnant women, puerp - for postpartum, and no - for woman of
+reprodutive age.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Creating postpartum indicator}
+\NormalTok{data6 <-}\StringTok{ }\NormalTok{data6 }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{puerpera =} \KeywordTok{ifelse}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(PUERPERA) }\OperatorTok{==}\StringTok{ }\OtherTok{TRUE}\NormalTok{, }\DecValTok{0}\NormalTok{, PUERPERA))}
+
+\CommentTok{#Creating group varible with three categories:}
+\CommentTok{##preg - for pregnant women, }
+\CommentTok{##puerp - for postpartum and }
+\CommentTok{##no - woman of reprodutive age}
+\NormalTok{data6 <-}\StringTok{ }\NormalTok{data6 }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{gest_puerp =} \KeywordTok{ifelse}\NormalTok{(}
+\NormalTok{    gestante_SN }\OperatorTok{==}\StringTok{ "yes"}\NormalTok{,}
+    \DecValTok{1}\NormalTok{,}
+    \KeywordTok{ifelse}\NormalTok{(gestante_SN }\OperatorTok{==}\StringTok{ "no"} \OperatorTok{&}\StringTok{ }\NormalTok{puerpera }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+\NormalTok{    )}
+  
+\NormalTok{data6}\OperatorTok{$}\NormalTok{gest_puerp <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{gest_puerp, }
+                     \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), }
+                     \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"no"}\NormalTok{, }\StringTok{"preg"}\NormalTok{, }\StringTok{"puerp"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{gest_puerp,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for group variable"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-15}Frequency table for group variable}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+no & 36474 & 89.7\\
+\hline
+preg & 3372 & 8.3\\
+\hline
+puerp & 794 & 2.0\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\hypertarget{characterization-variables-and-comorbities}{%
+\subsection{3.1 Characterization variables and
+comorbities}\label{characterization-variables-and-comorbities}}
+
+The age information is in \texttt{NU\_IDADE\_N}. We create the age group
+variable (\texttt{faixa\_et}) with categories: ``\textless20'',
+``20-34'' and ``\textgreater34''.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#age group variable}
+\NormalTok{data6 <-}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{mutate}\NormalTok{(data6, }\DataTypeTok{faixa_et =} \KeywordTok{ifelse}\NormalTok{(}
+\NormalTok{    NU_IDADE_N }\OperatorTok{<=}\StringTok{ }\DecValTok{19}\NormalTok{,}
+    \StringTok{"<20"}\NormalTok{,}
+    \KeywordTok{ifelse}\NormalTok{(NU_IDADE_N }\OperatorTok{>=}\StringTok{ }\DecValTok{20} \OperatorTok{&}\StringTok{ }\NormalTok{NU_IDADE_N }\OperatorTok{<=}\StringTok{ }\DecValTok{34}\NormalTok{, }\StringTok{"20-34"}\NormalTok{, }\StringTok{">34"}\NormalTok{)}
+\NormalTok{  ))}
+
+\NormalTok{data6}\OperatorTok{$}\NormalTok{faixa_et <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{faixa_et,}
+                         \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"<20"}\NormalTok{, }\StringTok{"20-34"}\NormalTok{, }\StringTok{">34"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{faixa_et,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for group age"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-17}Frequency table for group age}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+<20 & 1320 & 3.2\\
+\hline
+20-34 & 12367 & 30.4\\
+\hline
+>34 & 26953 & 66.3\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+For ethnicity (\texttt{CS\_RACA}), the categories are: 1-white; 2-black;
+3-yellow; 4-brown; 5-Indigenous; 6-Ignored.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{CS_RACA,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for ethnicity"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-18}Frequency table for ethnicity}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 16758 & 41.2\\
+\hline
+2 & 1917 & 4.7\\
+\hline
+3 & 396 & 1.0\\
+\hline
+4 & 12706 & 31.3\\
+\hline
+5 & 114 & 0.3\\
+\hline
+9 & 6135 & 15.1\\
+\hline
+NA & 2614 & 6.4\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+We will now label this variable, creating the variable \texttt{raca},
+considering only the valid categories.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#ethnicity variable}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{raca <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{CS_RACA,}
+  \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{, }\StringTok{"3"}\NormalTok{, }\StringTok{"4"}\NormalTok{, }\StringTok{"5"}\NormalTok{),}
+  \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"white"}\NormalTok{, }\StringTok{"black"}\NormalTok{, }\StringTok{"yellow"}\NormalTok{, }\StringTok{"brown"}\NormalTok{, }\StringTok{"indigenous"}\NormalTok{)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+For education (\texttt{CS\_ESCOL\_N}), the categories are: 0-no
+education/illiterate; 1-fundamental 1st cycle; 2-fundamental 2nd cycle;
+3-high school; 4-superior; 5-not applicable, 9-ignored.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{CS_ESCOL_N,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for school"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-20}Frequency table for school}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+0 & 228 & 0.6\\
+\hline
+1 & 1546 & 3.8\\
+\hline
+2 & 2556 & 6.3\\
+\hline
+3 & 8501 & 20.9\\
+\hline
+4 & 4403 & 10.8\\
+\hline
+5 & 1 & 0.0\\
+\hline
+9 & 11495 & 28.3\\
+\hline
+NA & 11910 & 29.3\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+We will now label this variable, creating the variable \texttt{escol},
+considering only the valid categories and considering the following
+categories: no education/illiterate (\texttt{CS\_ESCOL\_N} = 0), up to
+high school (\texttt{CS\_ESCOL\_N} = 1 or 2), high school
+(\texttt{CS\_ESCOL\_N} = 3) and higher education (\texttt{CS\_ESCOL\_N}
+= 4).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#school variable}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{escol <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{CS_ESCOL_N,}
+  \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"0"}\NormalTok{, }\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{, }\StringTok{"3"}\NormalTok{, }\StringTok{"4"}\NormalTok{),}
+  \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}
+    \StringTok{"no education"}\NormalTok{,}
+    \StringTok{"up to high school"}\NormalTok{,}
+    \StringTok{"up to high school"}\NormalTok{,}
+    \StringTok{"high school"}\NormalTok{,}
+    \StringTok{"higher education"}
+\NormalTok{  )}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{escol,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for school (new categories)"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-22}Frequency table for school (new categories)}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+no education & 228 & 0.6\\
+\hline
+up to high school & 4102 & 10.1\\
+\hline
+high school & 8501 & 20.9\\
+\hline
+higher education & 4403 & 10.8\\
+\hline
+NA & 23406 & 57.6\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+For comorbidities, the categories are: 1-yes, 2-no and 9-ignored. The
+comorbidities considered are: cardiopathy, hematology, liver disease,
+asthma, diabetes, neurological diseases, pneumopathy, immunosuppression,
+kidney disease, and obesity, and their frequency tables are presented
+below, respectively:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{CARDIOPATI,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for cardiopathy"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-23}Frequency table for cardiopathy}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 6071 & 14.9\\
+\hline
+2 & 8905 & 21.9\\
+\hline
+9 & 230 & 0.6\\
+\hline
+NA & 25434 & 62.6\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{HEMATOLOGI,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for hematology"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-24}Frequency table for hematology}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 383 & 0.9\\
+\hline
+2 & 12518 & 30.8\\
+\hline
+9 & 282 & 0.7\\
+\hline
+NA & 27457 & 67.6\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{HEPATICA,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for liver disease"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-25}Frequency table for liver disease}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 201 & 0.5\\
+\hline
+2 & 12568 & 30.9\\
+\hline
+9 & 286 & 0.7\\
+\hline
+NA & 27585 & 67.9\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{ASMA,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for asthma"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-26}Frequency table for asthma}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 2055 & 5.1\\
+\hline
+2 & 11371 & 28.0\\
+\hline
+9 & 264 & 0.6\\
+\hline
+NA & 26950 & 66.3\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{DIABETES,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for diabetes"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-27}Frequency table for diabetes}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 5127 & 12.6\\
+\hline
+2 & 9448 & 23.2\\
+\hline
+9 & 217 & 0.5\\
+\hline
+NA & 25848 & 63.6\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{NEUROLOGIC,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for neurological diseases"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-28}Frequency table for neurological diseases}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 598 & 1.5\\
+\hline
+2 & 12335 & 30.4\\
+\hline
+9 & 273 & 0.7\\
+\hline
+NA & 27434 & 67.5\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{PNEUMOPATI,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for pneumopathy"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-29}Frequency table for pneumopathy}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 607 & 1.5\\
+\hline
+2 & 12338 & 30.4\\
+\hline
+9 & 281 & 0.7\\
+\hline
+NA & 27414 & 67.5\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{IMUNODEPRE,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for immunosuppression"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-30}Frequency table for immunosuppression}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 1347 & 3.3\\
+\hline
+2 & 11790 & 29.0\\
+\hline
+9 & 281 & 0.7\\
+\hline
+NA & 27222 & 67.0\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{RENAL,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for kidney disease"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-31}Frequency table for kidney disease}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 1116 & 2.7\\
+\hline
+2 & 11931 & 29.4\\
+\hline
+9 & 275 & 0.7\\
+\hline
+NA & 27318 & 67.2\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{OBESIDADE,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for obesity"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-32}Frequency table for obesity}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 3937 & 9.7\\
+\hline
+2 & 9776 & 24.1\\
+\hline
+9 & 462 & 1.1\\
+\hline
+NA & 26465 & 65.1\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+We will label in the following the comorbidities indicators, considering
+only the valid categories.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#cardiopathy}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{cardiopati <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{CARDIOPATI,}
+                           \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                           \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#hematology}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{hematologi <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{HEMATOLOGI,}
+                           \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                           \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#liver disease}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{hepatica <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{HEPATICA,}
+                         \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                         \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#asthma}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{asma <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{ASMA,}
+                     \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                     \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#diabetes}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{diabetes <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{DIABETES,}
+                         \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                         \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#neurological diseases}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{neuro <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{NEUROLOGIC,}
+                      \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                      \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#pneumopathy}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{pneumopati <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{PNEUMOPATI,}
+                           \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                           \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#immunosuppression}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{imunodepre <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{IMUNODEPRE,}
+                           \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                           \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#kidney disease}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{renal <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{RENAL,}
+                      \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                      \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#obesity}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{obesidade <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{OBESIDADE,}
+                          \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                          \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+One variable we want to analyze is the comorbities group
+(\texttt{gr\_comorb}) with the categories: ``none'', ``1 or 2'',
+``\textgreater2''.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{comorbidades <-}
+\StringTok{  }\KeywordTok{c}\NormalTok{(}
+    \StringTok{"CARDIOPATI_aux"}\NormalTok{,}
+    \StringTok{"HEMATOLOGI_aux"}\NormalTok{,}
+    \StringTok{"HEPATICA_aux"}\NormalTok{,}
+    \StringTok{"ASMA_aux"}\NormalTok{,}
+    \StringTok{"DIABETES_aux"}\NormalTok{,}
+    \StringTok{"NEUROLOGIC_aux"}\NormalTok{,}
+    \StringTok{"PNEUMOPATI_aux"}\NormalTok{,}
+    \StringTok{"IMUNODEPRE_aux"}\NormalTok{,}
+    \StringTok{"RENAL_aux"}\NormalTok{,}
+    \StringTok{"OBESIDADE_aux"}
+\NormalTok{  )}
+
+\NormalTok{comorbidades1 <-}
+\StringTok{  }\KeywordTok{c}\NormalTok{(}
+    \StringTok{"CARDIOPATI_aux1"}\NormalTok{,}
+    \StringTok{"HEMATOLOGI_aux1"}\NormalTok{,}
+    \StringTok{"HEPATICA_aux1"}\NormalTok{,}
+    \StringTok{"ASMA_aux1"}\NormalTok{,}
+    \StringTok{"DIABETES_aux1"}\NormalTok{,}
+    \StringTok{"NEUROLOGIC_aux1"}\NormalTok{,}
+    \StringTok{"PNEUMOPATI_aux1"}\NormalTok{,}
+    \StringTok{"IMUNODEPRE_aux1"}\NormalTok{,}
+    \StringTok{"RENAL_aux1"}\NormalTok{,}
+    \StringTok{"OBESIDADE_aux1"}
+\NormalTok{  )}
+
+\NormalTok{data6 <-}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+\NormalTok{    data6,}
+    \DataTypeTok{CARDIOPATI_aux =}\NormalTok{ CARDIOPATI,}
+    \DataTypeTok{HEMATOLOGI_aux =}\NormalTok{ HEMATOLOGI,}
+    \DataTypeTok{HEPATICA_aux =}\NormalTok{ HEPATICA,}
+    \DataTypeTok{ASMA_aux =}\NormalTok{ ASMA,}
+    \DataTypeTok{DIABETES_aux =}\NormalTok{ DIABETES,}
+    \DataTypeTok{NEUROLOGIC_aux =}\NormalTok{ NEUROLOGIC,}
+    \DataTypeTok{PNEUMOPATI_aux =}\NormalTok{ PNEUMOPATI,}
+    \DataTypeTok{IMUNODEPRE_aux =}\NormalTok{ IMUNODEPRE,}
+    \DataTypeTok{RENAL_aux =}\NormalTok{ RENAL,}
+    \DataTypeTok{OBESIDADE_aux =}\NormalTok{ OBESIDADE}
+\NormalTok{  )}
+
+\NormalTok{data6 <-}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+\NormalTok{    data6,}
+    \DataTypeTok{CARDIOPATI_aux1 =}\NormalTok{ CARDIOPATI,}
+    \DataTypeTok{HEMATOLOGI_aux1 =}\NormalTok{ HEMATOLOGI,}
+    \DataTypeTok{HEPATICA_aux1 =}\NormalTok{ HEPATICA,}
+    \DataTypeTok{ASMA_aux1 =}\NormalTok{ ASMA,}
+    \DataTypeTok{DIABETES_aux1 =}\NormalTok{ DIABETES,}
+    \DataTypeTok{NEUROLOGIC_aux1 =}\NormalTok{ NEUROLOGIC,}
+    \DataTypeTok{PNEUMOPATI_aux1 =}\NormalTok{ PNEUMOPATI,}
+    \DataTypeTok{IMUNODEPRE_aux1 =}\NormalTok{ IMUNODEPRE,}
+    \DataTypeTok{RENAL_aux1 =}\NormalTok{ RENAL,}
+    \DataTypeTok{OBESIDADE_aux1 =}\NormalTok{ OBESIDADE}
+\NormalTok{  )}
+
+\NormalTok{data6 <-}\StringTok{  }\NormalTok{data6 }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{mutate_at}\NormalTok{(dplyr}\OperatorTok{::}\KeywordTok{all_of}\NormalTok{(comorbidades), }\ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{    dplyr}\OperatorTok{::}\KeywordTok{case_when}\NormalTok{(x }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, }\OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{)}
+\NormalTok{  \}) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{mutate_at}\NormalTok{(dplyr}\OperatorTok{::}\KeywordTok{all_of}\NormalTok{(comorbidades1), }\ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{    dplyr}\OperatorTok{::}\KeywordTok{case_when}\NormalTok{(x }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, x }\OperatorTok{==}\StringTok{ "2"} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{, }\OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}\NormalTok{)}
+\NormalTok{  \}) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{mutate}\NormalTok{(}
+    \DataTypeTok{cont_comorb =}\NormalTok{ CARDIOPATI_aux }\OperatorTok{+}\StringTok{ }\NormalTok{HEMATOLOGI_aux }\OperatorTok{+}\StringTok{  }\NormalTok{HEPATICA_aux }\OperatorTok{+}\StringTok{ }\NormalTok{ASMA_aux }\OperatorTok{+}\StringTok{ }
+\StringTok{      }\NormalTok{DIABETES_aux }\OperatorTok{+}\StringTok{ }\NormalTok{NEUROLOGIC_aux }\OperatorTok{+}\StringTok{ }\NormalTok{PNEUMOPATI_aux }\OperatorTok{+}\StringTok{ }\NormalTok{IMUNODEPRE_aux }\OperatorTok{+}\StringTok{ }
+\StringTok{      }\NormalTok{RENAL_aux }\OperatorTok{+}\StringTok{ }\NormalTok{OBESIDADE_aux}
+\NormalTok{  ) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{mutate}\NormalTok{(}
+    \DataTypeTok{num_comorb =}\NormalTok{ dplyr}\OperatorTok{::}\KeywordTok{case_when}\NormalTok{(}
+      \KeywordTok{is.na}\NormalTok{(CARDIOPATI_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(HEMATOLOGI_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(HEPATICA_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(ASMA_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(DIABETES_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(NEUROLOGIC_aux1) }\OperatorTok{|}\StringTok{ }\KeywordTok{is.na}\NormalTok{(PNEUMOPATI_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(IMUNODEPRE_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(RENAL_aux1) }\OperatorTok{|}\StringTok{ }\KeywordTok{is.na}\NormalTok{(OBESIDADE_aux1) }\OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}\NormalTok{,}
+      \OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\NormalTok{cont_comorb}
+\NormalTok{    ),}
+    \DataTypeTok{gr_comorb =}\NormalTok{ dplyr}\OperatorTok{::}\KeywordTok{case_when}\NormalTok{(}
+\NormalTok{      num_comorb }\OperatorTok{==}\StringTok{ }\DecValTok{0} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{,}
+\NormalTok{      num_comorb }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{,}
+\NormalTok{      num_comorb }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{,}
+\NormalTok{      num_comorb }\OperatorTok{>}\StringTok{  }\DecValTok{2} \OperatorTok{~}\StringTok{ }\DecValTok{2}\NormalTok{,}
+      \OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}
+\NormalTok{    )}
+\NormalTok{  )}
+
+\CommentTok{# Comorbities group}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{gr_comorb <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{gr_comorb,}
+                          \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{),}
+                          \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"none"}\NormalTok{, }\StringTok{"1 or 2"}\NormalTok{, }\StringTok{">2"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{gr_comorb,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for comorbities group"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-44}Frequency table for comorbities group}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+none & 2933 & 7.2\\
+\hline
+1 or 2 & 8195 & 20.2\\
+\hline
+>2 & 830 & 2.0\\
+\hline
+NA & 28682 & 70.6\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+Another variable of interest is metabolic syndrome defined here if one
+has diabetes, heart disease and obesity. The variable name is
+\texttt{gr\_sind\_met} with the categories ``yes'' and ``no''.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sind_met <-}\StringTok{  }\KeywordTok{c}\NormalTok{(}\StringTok{"CARDIOPATI_aux"}\NormalTok{,}
+               \StringTok{"DIABETES_aux"}\NormalTok{, }\StringTok{"OBESIDADE_aux"}\NormalTok{)}
+
+\NormalTok{sind_met1 <-}\StringTok{  }\KeywordTok{c}\NormalTok{(}\StringTok{"CARDIOPATI_aux1"}\NormalTok{,}
+                \StringTok{"DIABETES_aux1"}\NormalTok{,}
+                \StringTok{"OBESIDADE_aux1"}\NormalTok{)}
+
+\NormalTok{data6 <-}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+\NormalTok{    data6,}
+    \DataTypeTok{CARDIOPATI_aux =}\NormalTok{ CARDIOPATI,}
+    \DataTypeTok{DIABETES_aux =}\NormalTok{ DIABETES,}
+    \DataTypeTok{OBESIDADE_aux =}\NormalTok{ OBESIDADE}
+\NormalTok{  )}
+
+\NormalTok{data6 <-}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+\NormalTok{    data6,}
+    \DataTypeTok{CARDIOPATI_aux1 =}\NormalTok{ CARDIOPATI,}
+    \DataTypeTok{DIABETES_aux1 =}\NormalTok{ DIABETES,}
+    \DataTypeTok{OBESIDADE_aux1 =}\NormalTok{ OBESIDADE}
+\NormalTok{  )}
+
+\NormalTok{data6 <-}\StringTok{  }\NormalTok{data6 }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate_at}\NormalTok{(}\KeywordTok{all_of}\NormalTok{(sind_met), }\ControlFlowTok{function}\NormalTok{(x) \{}
+    \KeywordTok{case_when}\NormalTok{(x }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, }\OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{)}
+\NormalTok{  \}) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate_at}\NormalTok{(}\KeywordTok{all_of}\NormalTok{(sind_met1), }\ControlFlowTok{function}\NormalTok{(x) \{}
+    \KeywordTok{case_when}\NormalTok{(x }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, x }\OperatorTok{==}\StringTok{ "2"} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{, }\OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}\NormalTok{)}
+\NormalTok{  \}) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{cont_sind_met =}\NormalTok{ CARDIOPATI_aux }\OperatorTok{+}\StringTok{ }\NormalTok{DIABETES_aux }\OperatorTok{+}\StringTok{ }\NormalTok{OBESIDADE_aux) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+    \DataTypeTok{num_sind_met =} \KeywordTok{case_when}\NormalTok{(}
+      \KeywordTok{is.na}\NormalTok{(CARDIOPATI_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(DIABETES_aux1) }\OperatorTok{|}\StringTok{ }\KeywordTok{is.na}\NormalTok{(OBESIDADE_aux1) }\OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}\NormalTok{,}
+      \OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\NormalTok{cont_sind_met}
+\NormalTok{    ),}
+    \DataTypeTok{gr_sind_met =} \KeywordTok{case_when}\NormalTok{(}
+\NormalTok{      num_sind_met }\OperatorTok{==}\StringTok{ }\DecValTok{0} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{,}
+\NormalTok{      num_sind_met }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{,}
+\NormalTok{      num_sind_met }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{,}
+\NormalTok{      num_sind_met }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{,}
+      \OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}
+\NormalTok{    )}
+\NormalTok{  )}
+
+\CommentTok{#metabolic syndrome indicator}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{gr_sind_met <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{gr_sind_met,}
+                            \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+                            \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{gr_sind_met,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for metabolic syndrome"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-46}Frequency table for metabolic syndrome}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+yes & 436 & 1.1\\
+\hline
+no & 12073 & 29.7\\
+\hline
+NA & 28131 & 69.2\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\hypertarget{symptom-variables-and-indicator-of-hospital-acquired-infection}{%
+\subsection{3.2 Symptom variables and indicator of hospital-acquired
+infection}\label{symptom-variables-and-indicator-of-hospital-acquired-infection}}
+
+For the indicator of a case arising from an infection acquired in the
+hospital (\texttt{NOSOCOMIAL}), the categories are 1-yes, 2-no and
+9-ignored.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{NOSOCOMIAL,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for hospital-acquired infection"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-47}Frequency table for hospital-acquired infection}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 831 & 2.0\\
+\hline
+2 & 29891 & 73.6\\
+\hline
+9 & 2802 & 6.9\\
+\hline
+NA & 7116 & 17.5\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+We will now label this variable, creating the variable
+\texttt{inf\_inter}, considering only the valid categories.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data6}\OperatorTok{$}\NormalTok{inf_inter <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{NOSOCOMIAL,}
+                          \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                          \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+The symptoms are fever, cough, sore throat, dyspnoea, vomiting,
+abdominal pain, fatigue, respiratory distress, saturation, diarrhea,
+olfactory loss and loss of taste. In the original dataset they are
+\texttt{FEBRE}, \texttt{TOSSE}, \texttt{GARGANTA}, \texttt{DISPNEIA},
+\texttt{VOMITO}, \texttt{DOR\_ABD}, \texttt{FADIGA},
+\texttt{DESC\_RESP}, \texttt{SATURACAO}, \texttt{DIARREIA},
+\texttt{PERD\_OLFT}, \texttt{PERD\_PALA}, respectively. The categories
+of these variables are 1-yes, 2-no and 9-ignored.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{FEBRE,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for fever indicator"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-49}Frequency table for fever indicator}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 26759 & 65.8\\
+\hline
+2 & 9612 & 23.7\\
+\hline
+9 & 360 & 0.9\\
+\hline
+NA & 3909 & 9.6\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{TOSSE,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for cough indicator"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-50}Frequency table for cough indicator}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 30188 & 74.3\\
+\hline
+2 & 6913 & 17.0\\
+\hline
+9 & 296 & 0.7\\
+\hline
+NA & 3243 & 8.0\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{GARGANTA,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for sore throat indicator"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-51}Frequency table for sore throat indicator}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 9734 & 24.0\\
+\hline
+2 & 21740 & 53.5\\
+\hline
+9 & 612 & 1.5\\
+\hline
+NA & 8554 & 21.0\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{DISPNEIA,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for dyspnea indicator"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-52}Frequency table for dyspnea indicator}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 27276 & 67.1\\
+\hline
+2 & 8996 & 22.1\\
+\hline
+9 & 295 & 0.7\\
+\hline
+NA & 4073 & 10.0\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{VOMITO,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for vomiting"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-53}Frequency table for vomiting}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 4535 & 11.2\\
+\hline
+2 & 25807 & 63.5\\
+\hline
+9 & 681 & 1.7\\
+\hline
+NA & 9617 & 23.7\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{DOR_ABD,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for abdominal pain"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-54}Frequency table for abdominal pain}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 1484 & 3.7\\
+\hline
+2 & 14291 & 35.2\\
+\hline
+9 & 493 & 1.2\\
+\hline
+NA & 24372 & 60.0\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{FADIGA,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for fatigue"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-55}Frequency table for fatigue}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 4693 & 11.5\\
+\hline
+2 & 11523 & 28.4\\
+\hline
+9 & 497 & 1.2\\
+\hline
+NA & 23927 & 58.9\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{DESC_RESP,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for respiratory discomfort"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-56}Frequency table for respiratory discomfort}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 21873 & 53.8\\
+\hline
+2 & 12150 & 29.9\\
+\hline
+9 & 423 & 1.0\\
+\hline
+NA & 6194 & 15.2\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{SATURACAO,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for saturation"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-57}Frequency table for saturation}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 18260 & 44.9\\
+\hline
+2 & 15222 & 37.5\\
+\hline
+9 & 529 & 1.3\\
+\hline
+NA & 6629 & 16.3\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{DIARREIA,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for diarrhea"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-58}Frequency table for diarrhea}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 6787 & 16.7\\
+\hline
+2 & 24120 & 59.4\\
+\hline
+9 & 621 & 1.5\\
+\hline
+NA & 9112 & 22.4\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{PERD_OLFT,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for olfactory loss"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-59}Frequency table for olfactory loss}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 3602 & 8.9\\
+\hline
+2 & 12600 & 31.0\\
+\hline
+9 & 542 & 1.3\\
+\hline
+NA & 23896 & 58.8\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{PERD_PALA,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for loss of taste"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-60}Frequency table for loss of taste}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+1 & 3463 & 8.5\\
+\hline
+2 & 12640 & 31.1\\
+\hline
+9 & 550 & 1.4\\
+\hline
+NA & 23987 & 59.0\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+We will now label the sympthoms variables by considering only the valid
+categories and creating the variable \texttt{febre}, \texttt{tosse},
+\texttt{garganta}, \texttt{dispneia}, \texttt{vomito},
+\texttt{dor\_abd}, \texttt{fadiga}, \texttt{desc\_resp},
+\texttt{saturacao}, \texttt{diarreia}, \texttt{perd\_olft} and
+\texttt{perd\_pala} that represent fever, cough, sore throat, dyspnoea,
+vomiting, abdominal pain, fatigue, respiratory distress, saturation,
+diarrhea, olfactory loss and loss of taste, respectively.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#fever}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{febre <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{FEBRE,}
+                       \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                       \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#cough}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{tosse <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{TOSSE,}
+                       \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                       \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#sore throat}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{garganta <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{GARGANTA,}
+                          \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                          \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#dyspnoea}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{dispneia <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{DISPNEIA, }
+                     \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{), }
+                     \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#vomiting}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{vomito <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{VOMITO,}
+                        \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                        \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#abdominal pain}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{dor_abd <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{DOR_ABD,}
+                         \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                         \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#fatigue}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{fadiga <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{FADIGA,}
+                        \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                        \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#respiratory distress}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{desc_resp <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{DESC_RESP,}
+                           \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                           \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#saturation}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{saturacao <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{SATURACAO, }
+                     \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{), }
+                     \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#diarrhea}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{diarreia <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{DIARREIA, }
+                     \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{), }
+                     \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#olfactory loss}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{perd_olft <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{PERD_OLFT,}
+                           \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                           \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#loss of taste}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{perd_pala <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{PERD_PALA,}
+                           \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{),}
+                           \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+Besides the indicator variable of each symptom, the variable group of
+symptoms has three categories: ``none'', ``1 or 2'' and
+``\textgreater2'' (\texttt{gr\_sintomas}) and another indicator variable
+of at least one symptom (\texttt{sintomas\_SN}), with categories ``yes''
+or ``no''. The symptoms are fever, cough, sore throat, dyspnoea,
+respiratory distress, saturation, diarrhea, vomiting, abdominal pain,
+fatigue, olfactory loss and loss of taste.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sintomas <-}
+\StringTok{  }\KeywordTok{c}\NormalTok{(}
+    \StringTok{"FEBRE_aux"}\NormalTok{,}
+    \StringTok{"TOSSE_aux"}\NormalTok{,}
+    \StringTok{"GARGANTA_aux"}\NormalTok{,}
+    \StringTok{"DISPNEIA_aux"}\NormalTok{,}
+    \StringTok{"DESC_RESP_aux"}\NormalTok{,}
+    \StringTok{"SATURACAO_aux"}\NormalTok{,}
+    \StringTok{"DIARREIA_aux"}\NormalTok{,}
+    \StringTok{"VOMITO_aux"}\NormalTok{,}
+    \StringTok{"DOR_ABD_aux"}\NormalTok{,}
+    \StringTok{"FADIGA_aux"}\NormalTok{,}
+    \StringTok{"PERD_OLFT_aux"}\NormalTok{,}
+    \StringTok{"PERD_PALA_aux"}
+\NormalTok{  )}
+
+\NormalTok{sintomas1 <-}
+\StringTok{  }\KeywordTok{c}\NormalTok{(}
+    \StringTok{"FEBRE_aux1"}\NormalTok{,}
+    \StringTok{"TOSSE_aux1"}\NormalTok{,}
+    \StringTok{"GARGANTA_aux1"}\NormalTok{,}
+    \StringTok{"DISPNEIA_aux1"}\NormalTok{,}
+    \StringTok{"DESC_RESP_aux1"}\NormalTok{,}
+    \StringTok{"SATURACAO_aux1"}\NormalTok{,}
+    \StringTok{"DIARREIA_aux1"}\NormalTok{,}
+    \StringTok{"VOMITO_aux1"}\NormalTok{,}
+    \StringTok{"DOR_ABD_aux1"}\NormalTok{,}
+    \StringTok{"FADIGA_aux1"}\NormalTok{,}
+    \StringTok{"PERD_OLFT_aux1"}\NormalTok{,}
+    \StringTok{"PERD_PALA_aux1"}
+\NormalTok{  )}
+
+\NormalTok{data6 <-}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+\NormalTok{    data6,}
+    \DataTypeTok{FEBRE_aux =}\NormalTok{ FEBRE,}
+    \DataTypeTok{TOSSE_aux =}\NormalTok{ TOSSE,}
+    \DataTypeTok{GARGANTA_aux =}\NormalTok{ GARGANTA,}
+    \DataTypeTok{DISPNEIA_aux =}\NormalTok{ DISPNEIA,}
+    \DataTypeTok{DESC_RESP_aux =}\NormalTok{ DESC_RESP,}
+    \DataTypeTok{SATURACAO_aux =}\NormalTok{ SATURACAO,}
+    \DataTypeTok{DIARREIA_aux =}\NormalTok{ DIARREIA,}
+    \DataTypeTok{VOMITO_aux =}\NormalTok{ VOMITO,}
+    \DataTypeTok{DOR_ABD_aux =}\NormalTok{ DOR_ABD,}
+    \DataTypeTok{FADIGA_aux =}\NormalTok{ FADIGA,}
+    \DataTypeTok{PERD_OLFT_aux =}\NormalTok{ PERD_OLFT,}
+    \DataTypeTok{PERD_PALA_aux =}\NormalTok{ PERD_PALA}
+\NormalTok{  )}
+
+\NormalTok{data6 <-}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+\NormalTok{    data6,}
+    \DataTypeTok{FEBRE_aux1 =}\NormalTok{ FEBRE,}
+    \DataTypeTok{TOSSE_aux1 =}\NormalTok{ TOSSE,}
+    \DataTypeTok{GARGANTA_aux1 =}\NormalTok{ GARGANTA,}
+    \DataTypeTok{DISPNEIA_aux1 =}\NormalTok{ DISPNEIA,}
+    \DataTypeTok{DESC_RESP_aux1 =}\NormalTok{ DESC_RESP,}
+    \DataTypeTok{SATURACAO_aux1 =}\NormalTok{ SATURACAO,}
+    \DataTypeTok{DIARREIA_aux1 =}\NormalTok{ DIARREIA,}
+    \DataTypeTok{VOMITO_aux1 =}\NormalTok{ VOMITO,}
+    \DataTypeTok{DOR_ABD_aux1 =}\NormalTok{ DOR_ABD,}
+    \DataTypeTok{FADIGA_aux1 =}\NormalTok{ FADIGA,}
+    \DataTypeTok{PERD_OLFT_aux1 =}\NormalTok{ PERD_OLFT,}
+    \DataTypeTok{PERD_PALA_aux1 =}\NormalTok{ PERD_PALA}
+\NormalTok{  )}
+
+\NormalTok{data6 <-}\StringTok{  }\NormalTok{data6 }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate_at}\NormalTok{(}\KeywordTok{all_of}\NormalTok{(sintomas), }\ControlFlowTok{function}\NormalTok{(x) \{}
+    \KeywordTok{case_when}\NormalTok{(x }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, }\OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{)}
+\NormalTok{  \}) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate_at}\NormalTok{(}\KeywordTok{all_of}\NormalTok{(sintomas1), }\ControlFlowTok{function}\NormalTok{(x) \{}
+    \KeywordTok{case_when}\NormalTok{(x }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, x }\OperatorTok{==}\StringTok{ "2"} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{, }\OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}\NormalTok{)}
+\NormalTok{  \}) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+    \DataTypeTok{cont_sintomas =}\NormalTok{ FEBRE_aux }\OperatorTok{+}\StringTok{ }\NormalTok{TOSSE_aux }\OperatorTok{+}\StringTok{  }\NormalTok{GARGANTA_aux }\OperatorTok{+}\StringTok{ }\NormalTok{DISPNEIA_aux }\OperatorTok{+}\StringTok{ }\NormalTok{DESC_RESP_aux }\OperatorTok{+}
+\StringTok{      }\NormalTok{SATURACAO_aux }\OperatorTok{+}\StringTok{ }\NormalTok{DIARREIA_aux }\OperatorTok{+}\StringTok{ }\NormalTok{VOMITO_aux }\OperatorTok{+}\StringTok{ }\NormalTok{DOR_ABD_aux }\OperatorTok{+}\StringTok{ }\NormalTok{FADIGA_aux }\OperatorTok{+}\StringTok{ }
+\StringTok{     }\NormalTok{PERD_OLFT_aux }\OperatorTok{+}\StringTok{ }\NormalTok{PERD_PALA_aux}
+\NormalTok{  ) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+    \DataTypeTok{num_sintomas =} \KeywordTok{case_when}\NormalTok{(}
+      \KeywordTok{is.na}\NormalTok{(FEBRE_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(TOSSE_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(GARGANTA_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(DISPNEIA_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(DESC_RESP_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(SATURACAO_aux1) }\OperatorTok{|}\StringTok{ }\KeywordTok{is.na}\NormalTok{(DIARREIA_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(VOMITO_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(DOR_ABD_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(FADIGA_aux1) }\OperatorTok{|}
+\StringTok{        }\KeywordTok{is.na}\NormalTok{(PERD_OLFT_aux1) }\OperatorTok{|}\StringTok{ }\KeywordTok{is.na}\NormalTok{(PERD_PALA_aux1) }\OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}\NormalTok{,}
+      \OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\NormalTok{cont_sintomas}
+\NormalTok{    ),}
+    \DataTypeTok{gr_sintomas =} \KeywordTok{case_when}\NormalTok{(}
+\NormalTok{      num_sintomas }\OperatorTok{==}\StringTok{ }\DecValTok{0} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{,}
+\NormalTok{      num_sintomas }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{,}
+\NormalTok{      num_sintomas }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{,}
+\NormalTok{      num_sintomas }\OperatorTok{>}\StringTok{  }\DecValTok{2} \OperatorTok{~}\StringTok{ }\DecValTok{2}\NormalTok{,}
+      \OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}
+\NormalTok{    ),}
+    \DataTypeTok{sintomas_SN =} \KeywordTok{case_when}\NormalTok{(}
+\NormalTok{      gr_sintomas }\OperatorTok{==}\StringTok{ }\DecValTok{0} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{,}
+\NormalTok{      gr_sintomas }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{,}
+\NormalTok{      gr_sintomas }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{,}
+      \OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}
+\NormalTok{    )}
+\NormalTok{  )}
+
+\CommentTok{#Symptom group }
+\NormalTok{data6}\OperatorTok{$}\NormalTok{gr_sintomas <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{gr_sintomas,}
+  \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{),}
+  \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"none"}\NormalTok{, }\StringTok{"1 or 2"}\NormalTok{, }\StringTok{">2"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{#At least one symptom indicator }
+\NormalTok{data6}\OperatorTok{$}\NormalTok{sintomas_SN <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{sintomas_SN,}
+                             \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+                             \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{gr_sintomas,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for symptom group"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-74}Frequency table for symptom group}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+none & 338 & 0.8\\
+\hline
+1 or 2 & 2347 & 5.8\\
+\hline
+>2 & 12028 & 29.6\\
+\hline
+NA & 25927 & 63.8\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{sintomas_SN,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for at least one symptom indicator"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-75}Frequency table for at least one symptom indicator}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+yes & 14375 & 35.4\\
+\hline
+no & 338 & 0.8\\
+\hline
+NA & 25927 & 63.8\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+An indicator variable of at least one respiratory symptom
+(\texttt{sint\_resp}) is created in the following.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{resp <-}\StringTok{  }\KeywordTok{c}\NormalTok{(}\StringTok{"DISPNEIA_aux"}\NormalTok{, }\StringTok{"DESC_RESP_aux"}\NormalTok{, }\StringTok{"SATURACAO_aux"}\NormalTok{)}
+
+\NormalTok{resp1 <-}\StringTok{  }\KeywordTok{c}\NormalTok{(}\StringTok{"DISPNEIA_aux1"}\NormalTok{, }\StringTok{"DESC_RESP_aux1"}\NormalTok{, }\StringTok{"SATURACAO_aux1"}\NormalTok{)}
+
+\NormalTok{data6 <-}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+\NormalTok{    data6,}
+    \DataTypeTok{DISPNEIA_aux =}\NormalTok{ DISPNEIA,}
+    \DataTypeTok{DESC_RESP_aux =}\NormalTok{ DESC_RESP,}
+    \DataTypeTok{SATURACAO_aux =}\NormalTok{ SATURACAO}
+\NormalTok{  )}
+
+\NormalTok{data6 <-}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+\NormalTok{    data6,}
+    \DataTypeTok{DISPNEIA_aux1 =}\NormalTok{ DISPNEIA,}
+    \DataTypeTok{DESC_RESP_aux1 =}\NormalTok{ DESC_RESP,}
+    \DataTypeTok{SATURACAO_aux1 =}\NormalTok{ SATURACAO}
+\NormalTok{  )}
+
+\NormalTok{data6 <-}\StringTok{  }\NormalTok{data6 }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate_at}\NormalTok{(}\KeywordTok{all_of}\NormalTok{(resp), }\ControlFlowTok{function}\NormalTok{(x) \{}
+    \KeywordTok{case_when}\NormalTok{(x }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, }\OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{)}
+\NormalTok{  \}) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate_at}\NormalTok{(}\KeywordTok{all_of}\NormalTok{(resp1), }\ControlFlowTok{function}\NormalTok{(x) \{}
+    \KeywordTok{case_when}\NormalTok{(x }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, x }\OperatorTok{==}\StringTok{ "2"} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{, }\OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}\NormalTok{)}
+\NormalTok{  \}) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{cont_resp =}\NormalTok{ DISPNEIA_aux }\OperatorTok{+}\StringTok{ }\NormalTok{DESC_RESP_aux }\OperatorTok{+}\StringTok{ }\NormalTok{SATURACAO_aux) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+    \DataTypeTok{num_resp =} \KeywordTok{case_when}\NormalTok{(}
+\NormalTok{      (cont_resp }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{) }\OperatorTok{&}
+\StringTok{        }\NormalTok{(}
+          \KeywordTok{is.na}\NormalTok{(DISPNEIA_aux1) }\OperatorTok{|}
+\StringTok{            }\KeywordTok{is.na}\NormalTok{(DESC_RESP_aux1) }\OperatorTok{|}\StringTok{ }\KeywordTok{is.na}\NormalTok{(SATURACAO_aux1)}
+\NormalTok{        ) }\OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}\NormalTok{,}
+      \OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\NormalTok{cont_resp}
+\NormalTok{    ),}
+    \DataTypeTok{sint_resp =} \KeywordTok{case_when}\NormalTok{(}
+\NormalTok{      num_resp }\OperatorTok{==}\StringTok{ }\DecValTok{0} \OperatorTok{~}\StringTok{ }\DecValTok{0}\NormalTok{,}
+\NormalTok{      num_resp }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{,}
+\NormalTok{      num_resp }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{,}
+\NormalTok{      num_resp }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{,}
+      \OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}
+\NormalTok{    )}
+\NormalTok{  )}
+
+\CommentTok{# Any respiratory symptom indicator}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{sint_resp <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{sint_resp,}
+                          \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+                          \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{sint_resp,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for any respiratory symptom"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-77}Frequency table for any respiratory symptom}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+yes & 32875 & 80.9\\
+\hline
+no & 4851 & 11.9\\
+\hline
+NA & 2914 & 7.2\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+The SARI (severe acute respiratory infection) indicator (\texttt{sari})
+is ``yes'' if one has fever and cough or sore throat and respiratory
+distress or dyspnoea or saturation. The SARI without fever indicator
+(\texttt{sari\_sfebre}) is what the name says.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data6 <-}\StringTok{  }\NormalTok{data6 }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+    \DataTypeTok{sari =} \KeywordTok{case_when}\NormalTok{(}
+\NormalTok{      FEBRE }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{&}
+\StringTok{        }\NormalTok{(TOSSE }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{|}\StringTok{ }\NormalTok{GARGANTA }\OperatorTok{==}\StringTok{ "1"}\NormalTok{) }\OperatorTok{&}
+\StringTok{        }\NormalTok{(DESC_RESP }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{|}
+\StringTok{           }\NormalTok{DISPNEIA }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{|}\StringTok{ }\NormalTok{SATURACAO }\OperatorTok{==}\StringTok{ "1"}\NormalTok{) }\OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{,}
+      \KeywordTok{is.na}\NormalTok{(FEBRE_aux1) }\OperatorTok{|}
+\StringTok{        }\NormalTok{(}\KeywordTok{is.na}\NormalTok{(TOSSE_aux1)  }\OperatorTok{&}
+\StringTok{           }\KeywordTok{is.na}\NormalTok{(GARGANTA_aux1)) }\OperatorTok{|}
+\StringTok{        }\NormalTok{(}
+          \KeywordTok{is.na}\NormalTok{(DESC_RESP_aux1) }\OperatorTok{&}
+\StringTok{            }\KeywordTok{is.na}\NormalTok{(DISPNEIA_aux1) }\OperatorTok{&}\StringTok{  }\KeywordTok{is.na}\NormalTok{(SATURACAO_aux1)}
+\NormalTok{        ) }\OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}\NormalTok{,}
+      \OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\DecValTok{0}
+\NormalTok{    ),}
+    \DataTypeTok{sari_sfebre =} \KeywordTok{case_when}\NormalTok{(}
+\NormalTok{      (TOSSE }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{|}\StringTok{ }\NormalTok{GARGANTA }\OperatorTok{==}\StringTok{ "1"}\NormalTok{) }\OperatorTok{&}
+\StringTok{        }\NormalTok{(DESC_RESP }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{|}\StringTok{ }\NormalTok{DISPNEIA }\OperatorTok{==}\StringTok{ "1"} \OperatorTok{|}\StringTok{ }\NormalTok{SATURACAO }\OperatorTok{==}\StringTok{ "1"}\NormalTok{) }\OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{,}
+\NormalTok{      (}\KeywordTok{is.na}\NormalTok{(TOSSE_aux1)  }\OperatorTok{&}
+\StringTok{         }\KeywordTok{is.na}\NormalTok{(GARGANTA_aux1)) }\OperatorTok{|}
+\StringTok{        }\NormalTok{(}
+          \KeywordTok{is.na}\NormalTok{(DESC_RESP_aux1) }\OperatorTok{&}
+\StringTok{            }\KeywordTok{is.na}\NormalTok{(DISPNEIA_aux1) }\OperatorTok{&}\StringTok{  }\KeywordTok{is.na}\NormalTok{(SATURACAO_aux1)}
+\NormalTok{        ) }\OperatorTok{~}\StringTok{ }\OtherTok{NA_real_}\NormalTok{,}
+      \OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\DecValTok{0}
+\NormalTok{    )}
+\NormalTok{  )}
+
+\CommentTok{#SARI}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{sari <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{sari,}
+                      \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+                      \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\CommentTok{#SARI without fever}
+\NormalTok{data6}\OperatorTok{$}\NormalTok{sari_sfebre <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(data6}\OperatorTok{$}\NormalTok{sari_sfebre,}
+                             \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+                             \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{sari,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for SARI"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-79}Frequency table for SARI}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+yes & 19639 & 48.3\\
+\hline
+no & 14479 & 35.6\\
+\hline
+NA & 6522 & 16.0\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{questionr}\OperatorTok{::}\KeywordTok{freq}\NormalTok{(}
+\NormalTok{  data6}\OperatorTok{$}\NormalTok{sari_sfebre,}
+  \DataTypeTok{cum =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{total =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{na.last =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{valid =} \OtherTok{FALSE}
+\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Frequency table for SARI without fever"}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{latex_options =} \StringTok{"hold_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-80}Frequency table for SARI without fever}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & n & \%\\
+\hline
+yes & 26671 & 65.6\\
+\hline
+no & 9268 & 22.8\\
+\hline
+NA & 4701 & 11.6\\
+\hline
+Total & 40640 & 100.0\\
+\hline
+\end{tabular}
+\end{table}
+
+\hypertarget{propensity-score-matching-psm}{%
+\section{4. Propensity score matching
+(PSM)}\label{propensity-score-matching-psm}}
+
+\hypertarget{psm-for-symptoms-variables}{%
+\subsection{4.1 PSM for symptoms
+variables}\label{psm-for-symptoms-variables}}
+
+We considered as control variables: age, ethnicity, cardiopathy, asthma,
+diabetes, immunodepression and obesity.
+
+First, we present the difference result among the groups regarding the
+control variables before the PSM. We consider as ``balanced'' the cases
+with mean difference greater than 0.05. As we can see, for most
+categories of control variables the groups are not balanced before the
+matching.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{bal.tab}\NormalTok{(gest_puerp }\OperatorTok{~}\StringTok{ }\NormalTok{NU_IDADE_N }\OperatorTok{+}\StringTok{ }\NormalTok{raca }\OperatorTok{+}\StringTok{ }\NormalTok{cardiopati }\OperatorTok{+}\StringTok{ }\NormalTok{asma }\OperatorTok{+}\StringTok{ }\NormalTok{diabetes }\OperatorTok{+}\StringTok{ }\NormalTok{imunodepre }\OperatorTok{+}\StringTok{ }\NormalTok{obesidade, }\DataTypeTok{data =}\NormalTok{ data6, }\DataTypeTok{estimand =} \StringTok{"ATT"}\NormalTok{, }\DataTypeTok{m.threshold =} \FloatTok{.05}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Balance summary across all treatment pairs
+##                    Type Max.Diff.Un      M.Threshold.Un
+## NU_IDADE_N_     Contin.      1.1385 Not Balanced, >0.05
+## raca_white       Binary      0.1686 Not Balanced, >0.05
+## raca_black       Binary      0.0130     Balanced, <0.05
+## raca_yellow      Binary      0.0063     Balanced, <0.05
+## raca_brown       Binary      0.1590 Not Balanced, >0.05
+## raca_indigenous  Binary      0.0028     Balanced, <0.05
+## raca:<NA>        Binary      0.0251     Balanced, <0.05
+## cardiopati_no    Binary      0.2811 Not Balanced, >0.05
+## cardiopati:<NA>  Binary      0.2976 Not Balanced, >0.05
+## asma_no          Binary      0.0914 Not Balanced, >0.05
+## asma:<NA>        Binary      0.2880 Not Balanced, >0.05
+## diabetes_no      Binary      0.2486 Not Balanced, >0.05
+## diabetes:<NA>    Binary      0.2758 Not Balanced, >0.05
+## imunodepre_no    Binary      0.0742 Not Balanced, >0.05
+## imunodepre:<NA>  Binary      0.2884 Not Balanced, >0.05
+## obesidade_no     Binary      0.1981 Not Balanced, >0.05
+## obesidade:<NA>   Binary      0.2805 Not Balanced, >0.05
+## 
+## Balance tally for mean differences
+##                     count
+## Balanced, <0.05         4
+## Not Balanced, >0.05    13
+## 
+## Variable with the greatest mean difference
+##     Variable Max.Diff.Un      M.Threshold.Un
+##  NU_IDADE_N_      1.1385 Not Balanced, >0.05
+## 
+## Sample sizes
+##        no preg puerp
+## All 36474 3372   794
+\end{verbatim}
+
+After PSM, all categories of control variables are balanced, with the
+exception of age (table below). Although the mean difference is greater
+than 0.05, it substantially decreased after the PSM: from 1.1385 to
+0.2684.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{w.out <-}
+\StringTok{  }\KeywordTok{weightit}\NormalTok{(}
+\NormalTok{    gest_puerp }\OperatorTok{~}\StringTok{ }\NormalTok{NU_IDADE_N }\OperatorTok{+}\StringTok{ }\NormalTok{raca }\OperatorTok{+}\StringTok{ }\NormalTok{cardiopati }\OperatorTok{+}\StringTok{ }\NormalTok{asma }\OperatorTok{+}\StringTok{ }\NormalTok{diabetes }\OperatorTok{+}\StringTok{ }\NormalTok{imunodepre }\OperatorTok{+}\StringTok{ }\NormalTok{obesidade, }
+    \DataTypeTok{use.mlogit =} \OtherTok{FALSE}\NormalTok{,}
+    \DataTypeTok{data =}\NormalTok{ data6,}
+    \DataTypeTok{focal =} \StringTok{"puerp"}\NormalTok{,}
+    \DataTypeTok{method =} \StringTok{"ps"}\NormalTok{,}
+    \DataTypeTok{estimand =} \StringTok{"ATT"}
+\NormalTok{  ) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cobalt}\OperatorTok{::}\KeywordTok{bal.tab}\NormalTok{(w.out, }\DataTypeTok{m.threshold =} \FloatTok{0.05}\NormalTok{, }\DataTypeTok{disp.v.ratio =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Call
+##  weightit(formula = gest_puerp ~ NU_IDADE_N + raca + cardiopati + 
+##     asma + diabetes + imunodepre + obesidade, data = data6, method = "ps", 
+##     estimand = "ATT", focal = "puerp", use.mlogit = FALSE)
+## 
+## Balance summary across all treatment pairs
+##                    Type Max.Diff.Adj         M.Threshold Max.V.Ratio.Adj
+## NU_IDADE_N      Contin.       0.2684 Not Balanced, >0.05          2.2665
+## raca_white       Binary       0.0080     Balanced, <0.05               .
+## raca_black       Binary       0.0035     Balanced, <0.05               .
+## raca_yellow      Binary       0.0011     Balanced, <0.05               .
+## raca_brown       Binary       0.0105     Balanced, <0.05               .
+## raca_indigenous  Binary       0.0008     Balanced, <0.05               .
+## raca:<NA>        Binary       0.0062     Balanced, <0.05               .
+## cardiopati_no    Binary       0.0104     Balanced, <0.05               .
+## cardiopati:<NA>  Binary       0.0099     Balanced, <0.05               .
+## asma_no          Binary       0.0045     Balanced, <0.05               .
+## asma:<NA>        Binary       0.0122     Balanced, <0.05               .
+## diabetes_no      Binary       0.0077     Balanced, <0.05               .
+## diabetes:<NA>    Binary       0.0120     Balanced, <0.05               .
+## imunodepre_no    Binary       0.0019     Balanced, <0.05               .
+## imunodepre:<NA>  Binary       0.0120     Balanced, <0.05               .
+## obesidade_no     Binary       0.0095     Balanced, <0.05               .
+## obesidade:<NA>   Binary       0.0122     Balanced, <0.05               .
+## 
+## Balance tally for mean differences
+##                     count
+## Balanced, <0.05        16
+## Not Balanced, >0.05     1
+## 
+## Variable with the greatest mean difference
+##    Variable Max.Diff.Adj         M.Threshold
+##  NU_IDADE_N       0.2684 Not Balanced, >0.05
+## 
+## Effective sample sizes
+##                  no    preg puerp
+## Unadjusted 36474.   3372.     794
+## Adjusted    3476.39 2296.34   794
+\end{verbatim}
+
+\hypertarget{psm-for-outcomes}{%
+\subsection{4.2 PSM for outcomes}\label{psm-for-outcomes}}
+
+For the analysis of the outcomes, only the cases that we know whether it
+is a case of death or cure are selected.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data6 <-}
+\StringTok{  }\NormalTok{data6 }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}
+    \DataTypeTok{evolucao =} \KeywordTok{case_when}\NormalTok{(}
+\NormalTok{      EVOLUCAO }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{ "cure"}\NormalTok{,}
+\NormalTok{      EVOLUCAO }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "death"}\NormalTok{,}
+\NormalTok{      EVOLUCAO }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "death"}\NormalTok{,}
+      \OtherTok{TRUE} \OperatorTok{~}\StringTok{ "in progress"}
+\NormalTok{    )}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+Now we exclude cases ``in progress''.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data7 <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(data6, evolucao }\OperatorTok{!=}\StringTok{ "in progress"}\NormalTok{)}
+
+\NormalTok{data7}\OperatorTok{$}\NormalTok{evolucao <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}
+\NormalTok{  data7}\OperatorTok{$}\NormalTok{evolucao,}
+  \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"death"}\NormalTok{, }\StringTok{"cure"}\NormalTok{),}
+  \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"death"}\NormalTok{, }\StringTok{"cure"}\NormalTok{)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+In this propensity score, we considered as control variables: age,
+ethnicity, school, Brazilian Federative Unit, cardiopathy, asthma,
+diabetes, immunodepression, obesity and respiratory symptoms.
+
+We present below the difference result among the groups regarding the
+control variables before the PSM. We consider as ``balanced'' the cases
+with mean difference greater than 0.05. As we can see, the groups are
+not balanced before the matching for many categories of the control
+variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{bal.tab}\NormalTok{(gest_puerp }\OperatorTok{~}\StringTok{ }\NormalTok{NU_IDADE_N }\OperatorTok{+}\StringTok{ }\NormalTok{raca }\OperatorTok{+}\StringTok{ }\NormalTok{escol }\OperatorTok{+}\StringTok{ }\NormalTok{SG_UF }\OperatorTok{+}\StringTok{ }\NormalTok{cardiopati }\OperatorTok{+}\StringTok{ }\NormalTok{asma }\OperatorTok{+}\StringTok{ }
+\StringTok{                    }\NormalTok{diabetes }\OperatorTok{+}\StringTok{ }\NormalTok{imunodepre }\OperatorTok{+}\StringTok{ }\NormalTok{obesidade }\OperatorTok{+}\StringTok{ }\NormalTok{sint_resp, }\DataTypeTok{data =}\NormalTok{ data7, }\DataTypeTok{estimand =} \StringTok{"ATT"}\NormalTok{, }\DataTypeTok{m.threshold =} \FloatTok{0.05}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Balance summary across all treatment pairs
+##                            Type Max.Diff.Un      M.Threshold.Un
+## NU_IDADE_N_             Contin.      1.1475 Not Balanced, >0.05
+## raca_white               Binary      0.1723 Not Balanced, >0.05
+## raca_black               Binary      0.0126     Balanced, <0.05
+## raca_yellow              Binary      0.0070     Balanced, <0.05
+## raca_brown               Binary      0.1658 Not Balanced, >0.05
+## raca_indigenous          Binary      0.0036     Balanced, <0.05
+## raca:<NA>                Binary      0.0330     Balanced, <0.05
+## escol_no education       Binary      0.0098     Balanced, <0.05
+## escol_up to high school  Binary      0.0089     Balanced, <0.05
+## escol_high school        Binary      0.0720 Not Balanced, >0.05
+## escol_higher education   Binary      0.0711 Not Balanced, >0.05
+## escol:<NA>               Binary      0.0077     Balanced, <0.05
+## SG_UF_AC                 Binary      0.0037     Balanced, <0.05
+## SG_UF_AL                 Binary      0.0025     Balanced, <0.05
+## SG_UF_AM                 Binary      0.0222     Balanced, <0.05
+## SG_UF_AP                 Binary      0.0007     Balanced, <0.05
+## SG_UF_BA                 Binary      0.0293     Balanced, <0.05
+## SG_UF_CE                 Binary      0.0349     Balanced, <0.05
+## SG_UF_DF                 Binary      0.0315     Balanced, <0.05
+## SG_UF_ES                 Binary      0.0036     Balanced, <0.05
+## SG_UF_GO                 Binary      0.0161     Balanced, <0.05
+## SG_UF_MA                 Binary      0.0130     Balanced, <0.05
+## SG_UF_MG                 Binary      0.0237     Balanced, <0.05
+## SG_UF_MS                 Binary      0.0132     Balanced, <0.05
+## SG_UF_MT                 Binary      0.0086     Balanced, <0.05
+## SG_UF_PA                 Binary      0.0128     Balanced, <0.05
+## SG_UF_PB                 Binary      0.0105     Balanced, <0.05
+## SG_UF_PE                 Binary      0.0631 Not Balanced, >0.05
+## SG_UF_PI                 Binary      0.0137     Balanced, <0.05
+## SG_UF_PR                 Binary      0.0198     Balanced, <0.05
+## SG_UF_RJ                 Binary      0.0178     Balanced, <0.05
+## SG_UF_RN                 Binary      0.0095     Balanced, <0.05
+## SG_UF_RO                 Binary      0.0052     Balanced, <0.05
+## SG_UF_RR                 Binary      0.0009     Balanced, <0.05
+## SG_UF_RS                 Binary      0.0281     Balanced, <0.05
+## SG_UF_SC                 Binary      0.0090     Balanced, <0.05
+## SG_UF_SE                 Binary      0.0088     Balanced, <0.05
+## SG_UF_SP                 Binary      0.1169 Not Balanced, >0.05
+## SG_UF_TO                 Binary      0.0021     Balanced, <0.05
+## SG_UF:<NA>               Binary      0.0014     Balanced, <0.05
+## cardiopati_no            Binary      0.2775 Not Balanced, >0.05
+## cardiopati:<NA>          Binary      0.3056 Not Balanced, >0.05
+## asma_no                  Binary      0.0954 Not Balanced, >0.05
+## asma:<NA>                Binary      0.2868 Not Balanced, >0.05
+## diabetes_no              Binary      0.2381 Not Balanced, >0.05
+## diabetes:<NA>            Binary      0.2843 Not Balanced, >0.05
+## imunodepre_no            Binary      0.0728 Not Balanced, >0.05
+## imunodepre:<NA>          Binary      0.2930 Not Balanced, >0.05
+## obesidade_no             Binary      0.1970 Not Balanced, >0.05
+## obesidade:<NA>           Binary      0.2858 Not Balanced, >0.05
+## sint_resp_no             Binary      0.1953 Not Balanced, >0.05
+## sint_resp:<NA>           Binary      0.0485     Balanced, <0.05
+## 
+## Balance tally for mean differences
+##                     count
+## Balanced, <0.05        34
+## Not Balanced, >0.05    18
+## 
+## Variable with the greatest mean difference
+##     Variable Max.Diff.Un      M.Threshold.Un
+##  NU_IDADE_N_      1.1475 Not Balanced, >0.05
+## 
+## Sample sizes
+##        no preg puerp
+## All 32081 2904   715
+\end{verbatim}
+
+After PSM, all categories of control variables are balanced, with the
+exception of age and the ``up to high school'' category (table below).
+Despite this, we can see that the mean difference value for the ``up to
+high school'' category (value of 0.0502) is very close to the threshold
+and for age, the mean difference is substantially decreased after the
+PSM: from 1.1475 to 0.3693.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{remove}\NormalTok{(w.out)}
+
+\NormalTok{w.out <-}\StringTok{ }\KeywordTok{weightit}\NormalTok{(gest_puerp }\OperatorTok{~}\StringTok{ }\NormalTok{NU_IDADE_N }\OperatorTok{+}\StringTok{ }\NormalTok{raca }\OperatorTok{+}\StringTok{ }\NormalTok{escol }\OperatorTok{+}\StringTok{ }\NormalTok{SG_UF }\OperatorTok{+}\StringTok{ }\NormalTok{cardiopati }\OperatorTok{+}\StringTok{ }\NormalTok{asma }\OperatorTok{+}\StringTok{ }
+\StringTok{                    }\NormalTok{diabetes }\OperatorTok{+}\StringTok{ }\NormalTok{imunodepre }\OperatorTok{+}\StringTok{ }\NormalTok{obesidade }\OperatorTok{+}\StringTok{ }\NormalTok{sint_resp, }\DataTypeTok{use.mlogit =} \OtherTok{FALSE}\NormalTok{, }
+                  \DataTypeTok{data =}\NormalTok{ data7, }\DataTypeTok{focal =} \StringTok{"puerp"}\NormalTok{, }\DataTypeTok{method =} \StringTok{"ps"}\NormalTok{, }\DataTypeTok{estimand =} \StringTok{"ATT"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cobalt}\OperatorTok{::}\KeywordTok{bal.tab}\NormalTok{(w.out, }\DataTypeTok{m.threshold =} \FloatTok{0.05}\NormalTok{, }\DataTypeTok{disp.v.ratio =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Call
+##  weightit(formula = gest_puerp ~ NU_IDADE_N + raca + escol + SG_UF + 
+##     cardiopati + asma + diabetes + imunodepre + obesidade + sint_resp, 
+##     data = data7, method = "ps", estimand = "ATT", focal = "puerp", 
+##     use.mlogit = FALSE)
+## 
+## Balance summary across all treatment pairs
+##                            Type Max.Diff.Adj         M.Threshold
+## NU_IDADE_N              Contin.       0.3693 Not Balanced, >0.05
+## raca_white               Binary       0.0108     Balanced, <0.05
+## raca_black               Binary       0.0077     Balanced, <0.05
+## raca_yellow              Binary       0.0025     Balanced, <0.05
+## raca_brown               Binary       0.0207     Balanced, <0.05
+## raca_indigenous          Binary       0.0014     Balanced, <0.05
+## raca:<NA>                Binary       0.0064     Balanced, <0.05
+## escol_no education       Binary       0.0041     Balanced, <0.05
+## escol_up to high school  Binary       0.0502 Not Balanced, >0.05
+## escol_high school        Binary       0.0450     Balanced, <0.05
+## escol_higher education   Binary       0.0066     Balanced, <0.05
+## escol:<NA>               Binary       0.0342     Balanced, <0.05
+## SG_UF_AC                 Binary       0.0002     Balanced, <0.05
+## SG_UF_AL                 Binary       0.0011     Balanced, <0.05
+## SG_UF_AM                 Binary       0.0054     Balanced, <0.05
+## SG_UF_AP                 Binary       0.0003     Balanced, <0.05
+## SG_UF_BA                 Binary       0.0007     Balanced, <0.05
+## SG_UF_CE                 Binary       0.0010     Balanced, <0.05
+## SG_UF_DF                 Binary       0.0119     Balanced, <0.05
+## SG_UF_ES                 Binary       0.0032     Balanced, <0.05
+## SG_UF_GO                 Binary       0.0043     Balanced, <0.05
+## SG_UF_MA                 Binary       0.0010     Balanced, <0.05
+## SG_UF_MG                 Binary       0.0082     Balanced, <0.05
+## SG_UF_MS                 Binary       0.0020     Balanced, <0.05
+## SG_UF_MT                 Binary       0.0037     Balanced, <0.05
+## SG_UF_PA                 Binary       0.0008     Balanced, <0.05
+## SG_UF_PB                 Binary       0.0048     Balanced, <0.05
+## SG_UF_PE                 Binary       0.0328     Balanced, <0.05
+## SG_UF_PI                 Binary       0.0002     Balanced, <0.05
+## SG_UF_PR                 Binary       0.0045     Balanced, <0.05
+## SG_UF_RJ                 Binary       0.0051     Balanced, <0.05
+## SG_UF_RN                 Binary       0.0031     Balanced, <0.05
+## SG_UF_RO                 Binary       0.0008     Balanced, <0.05
+## SG_UF_RR                 Binary       0.0002     Balanced, <0.05
+## SG_UF_RS                 Binary       0.0058     Balanced, <0.05
+## SG_UF_SC                 Binary       0.0038     Balanced, <0.05
+## SG_UF_SE                 Binary       0.0029     Balanced, <0.05
+## SG_UF_SP                 Binary       0.0129     Balanced, <0.05
+## SG_UF_TO                 Binary       0.0008     Balanced, <0.05
+## SG_UF:<NA>               Binary       0.0014     Balanced, <0.05
+## cardiopati_no            Binary       0.0149     Balanced, <0.05
+## cardiopati:<NA>          Binary       0.0101     Balanced, <0.05
+## asma_no                  Binary       0.0060     Balanced, <0.05
+## asma:<NA>                Binary       0.0138     Balanced, <0.05
+## diabetes_no              Binary       0.0084     Balanced, <0.05
+## diabetes:<NA>            Binary       0.0128     Balanced, <0.05
+## imunodepre_no            Binary       0.0026     Balanced, <0.05
+## imunodepre:<NA>          Binary       0.0116     Balanced, <0.05
+## obesidade_no             Binary       0.0095     Balanced, <0.05
+## obesidade:<NA>           Binary       0.0138     Balanced, <0.05
+## sint_resp_no             Binary       0.0061     Balanced, <0.05
+## sint_resp:<NA>           Binary       0.0159     Balanced, <0.05
+##                         Max.V.Ratio.Adj
+## NU_IDADE_N                       2.4696
+## raca_white                            .
+## raca_black                            .
+## raca_yellow                           .
+## raca_brown                            .
+## raca_indigenous                       .
+## raca:<NA>                             .
+## escol_no education                    .
+## escol_up to high school               .
+## escol_high school                     .
+## escol_higher education                .
+## escol:<NA>                            .
+## SG_UF_AC                              .
+## SG_UF_AL                              .
+## SG_UF_AM                              .
+## SG_UF_AP                              .
+## SG_UF_BA                              .
+## SG_UF_CE                              .
+## SG_UF_DF                              .
+## SG_UF_ES                              .
+## SG_UF_GO                              .
+## SG_UF_MA                              .
+## SG_UF_MG                              .
+## SG_UF_MS                              .
+## SG_UF_MT                              .
+## SG_UF_PA                              .
+## SG_UF_PB                              .
+## SG_UF_PE                              .
+## SG_UF_PI                              .
+## SG_UF_PR                              .
+## SG_UF_RJ                              .
+## SG_UF_RN                              .
+## SG_UF_RO                              .
+## SG_UF_RR                              .
+## SG_UF_RS                              .
+## SG_UF_SC                              .
+## SG_UF_SE                              .
+## SG_UF_SP                              .
+## SG_UF_TO                              .
+## SG_UF:<NA>                            .
+## cardiopati_no                         .
+## cardiopati:<NA>                       .
+## asma_no                               .
+## asma:<NA>                             .
+## diabetes_no                           .
+## diabetes:<NA>                         .
+## imunodepre_no                         .
+## imunodepre:<NA>                       .
+## obesidade_no                          .
+## obesidade:<NA>                        .
+## sint_resp_no                          .
+## sint_resp:<NA>                        .
+## 
+## Balance tally for mean differences
+##                     count
+## Balanced, <0.05        50
+## Not Balanced, >0.05     2
+## 
+## Variable with the greatest mean difference
+##    Variable Max.Diff.Adj         M.Threshold
+##  NU_IDADE_N       0.3693 Not Balanced, >0.05
+## 
+## Effective sample sizes
+##                  no    preg puerp
+## Unadjusted 32081.   2904.     715
+## Adjusted    1062.01 1739.87   715
+\end{verbatim}
+
+\end{document}

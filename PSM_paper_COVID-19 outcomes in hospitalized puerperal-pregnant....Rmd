@@ -1,0 +1,1389 @@
+---
+title: "COVID-19 outcomes in hospitalized puerperal, pregnant, and neither pregnant nor puerperal women: a population study"
+author: 'Codes and outputs of Propensity Score Matching'
+date: "08/26/2021"
+output:   
+  pdf_document:
+    keep_tex: yes
+  word_document: default
+  html_document:
+    df_print: paged
+    self_contained: no
+---
+
+# 1. Description
+ 
+This file presents the documentation of the analysis of Propensity Scoring Method (PSM) of the article "COVID-19 outcomes in hospitalized puerperal, pregnant, and neither pregnant nor puerperal women: a population study" with authors Fabiano Elisei Serra, Rossana Pulcineli Vieira Francisco, Patricia de Rossi, Maria de Lourdes Brizot, and
+Agatha Sacramento Rodrigues.
+
+# 2. R packages used, functions and dataset import
+
+
+The data are analyzed using the free-software R (https://www.R-project.org) in version 4.0.3. Next, we present and load the libraries used in the data analysis process.
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r pacotes, echo=TRUE, message=FALSE, warning =FALSE,error=FALSE, results='hide'}
+#load packages
+loadlibrary <- function(x) {
+  if (!require(x, character.only = TRUE)) {
+    install.packages(x, dependencies = T)
+    if (!require(x, character.only = TRUE))
+      stop("Package not found")
+  }
+}
+
+packages <-
+  c(
+    "readr",
+    "magrittr",
+    "dplyr",
+    "stringr",
+    "questionr",
+    "knitr",
+    "forcats",
+    "lubridate",
+    "summarytools",
+    "modelsummary",
+    "kableExtra",
+    "epitools",
+    "WeightIt",
+    "jtools",
+    "survey",
+    "cobalt",
+    "nnet"
+  )
+lapply(packages, loadlibrary)
+```
+
+The Influenza Epidemiological
+Surveillance Information System, SIVEP-Gripe (Sistema de Informação de Vigilância Epidemiológica da Gripe), is a
+nationwide surveillance database used to monitor severe acute respiratory infections in Brazil. 
+
+Notification is mandatory for Influenza Syndrome (characterized by at least two of the following signs and symptoms: fever, even if referred, chills, sore throat, headache, cough, runny nose, olfactory or taste disorders) and who has dyspnea/respiratory discomfort or persistent pressure in the chest or O2 saturation less than 95\% in room air or bluish color of the lips or face. Asymptomatic individuals with laboratory confirmation by molecular biology or immunological examination for COVID-19 infection are also reported.
+
+For notifications in Sivep-Gripe, hospitalized cases in both public and private hospitals and all deaths due to severe acute respiratory infections regardless of hospitalization must be considered.
+
+The analyzed period comprised data from epidemiological weeks 1 to 53 of 2020 (12/29/2019 - 01/02/2021) with the database downloaded on 01/11/2021 on the site https://opendatasus.saude.gov.br/dataset/bd-srag-2020. The data are loaded below:
+
+```{r,echo=TRUE,message=FALSE,warning =FALSE,error=FALSE,results='hide'}
+#loading the dataset
+data_all <- readr::read_delim(
+  "INFLUD-11-01-2021.csv",
+  ";",
+  escape_double = FALSE,
+  locale = locale(encoding = "ISO-8859-2"),
+  trim_ws = TRUE
+)
+```
+
+There are `r dim(data_all)[1]` cases in the complete dataset.  The case selection is presented in the following according to the flowchart presented in the article. 
+
+# 3. Case selection and data treatment
+
+The first filter consists of selecting the hospitalized cases. For that, the `HOSPITAL` variable is considered, in which 1-Yes, 2-No, and 9-Ignored.
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#Selecting only hospitalization cases
+data1 <- dplyr::filter(data_all, HOSPITAL == 1)
+```
+
+When considering only confirmed hospitalized cases, we get `r dim(data1)[1]` observations.
+
+The second filtering consists of the cases classified as COVID-19 in the database. The variable indicating the classification is `CLASSI_FIN`, with the following categories: 1-SRAG by influenza, 2-SRAG by another respiratory virus, 3-SRAG by another etiological agent, 4-SRAG not specified, and 5-SRAG by COVID-19.
+
+```{r, echo=TRUE, eval=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data1$CLASSI_FIN,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for case classification", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#Filtering COVID-19 cases
+data2 <- dplyr::filter(data1, CLASSI_FIN == 5)
+```
+
+There are `r dim(data2)[1]` selected cases for now.
+
+Only cases of COVID-19 confirmed by RT-PCR are selected. The selection is made as follows:
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#Selecting COVID-19 confirmed by RT-PCR
+data3 <- data2 %>%
+  dplyr::filter((PCR_SARS2 == 1) |
+                  (
+                    stringr::str_detect(DS_PCR_OUT, "SARS|COVID|COV|CORONA|CIVID") &
+                      !stringr::str_detect(DS_PCR_OUT, "63|43|229|HK|RINO|SINCI|PARE")
+                  ) |
+                  (
+                    PCR_RESUL == 1 &
+                      CRITERIO == 1 &
+                      is.na(DS_PCR_OUT) &
+                      (PCR_RINO  != 1 |
+                         is.na(PCR_RINO)) &
+                      (POS_PCRFLU != 1 | is.na(POS_PCRFLU)) &
+                      (PCR_OUTRO != 1 | is.na(PCR_OUTRO)) &
+                      (POS_PCROUT != 1 | is.na(POS_PCROUT)) &
+                      (is.na(PCR_VSR)) &
+                      (is.na(PCR_METAP)) &
+                      (is.na(PCR_PARA1))
+                  )
+  )
+```
+
+After this selection, `r dim(data3)[1]` cases are selected.
+
+The next step consists of selecting female cases. The sex variable  is `CS_SEXO`, in which F-Female, M-Male and I-Ignored.
+
+```{r, echo=TRUE, eval=TRUE, message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data3$CS_SEXO,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for sex", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE, message=FALSE,warning =FALSE,error=FALSE}
+#Filtering female cases
+data4 <- dplyr::filter(data3, CS_SEXO == "F")
+```
+
+Now there are `r dim (data4) [1]` cases. The next selection is to consider female people over 9 years old and under 50 (not inclusive). The variable that indicates the cases age is `NU_IDADE_N`.
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#Filtering female people over 9 years old and under 50
+data5 <- dplyr::filter(data4, NU_IDADE_N > 9 & NU_IDADE_N < 50)
+```
+
+The number of cases results in `r dim(data5)[1]` cases.
+
+Now we are going to identify pregnant people. For this, we will analyze the variable `CS_GESTANT`. This variable assumes the values: 1-1st gestational trimester; 2-2nd gestational trimester; 3-3rd gestational trimester; 4-Ignored gestational age; 5-No; 6-Does not apply; 9-Ignored.
+
+```{r, echo=TRUE, eval=TRUE, message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data5$CS_GESTANT,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for pregnancy variable", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+The next step is filtering cases we have information about pregnancy (yes - any gestational age - or not).
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#Not considering do not apply and ignored
+data6 <- dplyr::filter(data5, CS_GESTANT >= 1 & CS_GESTANT <= 5)
+```
+
+After the above filtering, we get `r dim(data6)[1]` observations. 
+
+The pregnancy indicator variable (independent of the gestational period) is created below.
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#Creating pregnancy indicator variable
+data6 <- data6 %>%
+  dplyr::mutate(gestante_SN = ifelse(CS_GESTANT == 5, "no", "yes"))
+```
+
+```{r, echo=TRUE, eval=TRUE, message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$gestante_SN,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>% 
+  knitr::kable(caption = "Frequency table for pregnancy indicator", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+The next step is considering the postpartum indicator variable. The `PUERPERA` variable has three categories: 1-yes, 2-no, and 9-Ignored.
+
+```{r, echo=TRUE, eval=TRUE, message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$PUERPERA,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for postpartum indicator", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+Now we can create the group variable with the categories: preg - for pregnant women, puerp - for postpartum, and no - for woman of reprodutive age.
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#Creating postpartum indicator
+data6 <- data6 %>%
+  dplyr::mutate(puerpera = ifelse(is.na(PUERPERA) == TRUE, 0, PUERPERA))
+
+#Creating group varible with three categories:
+##preg - for pregnant women, 
+##puerp - for postpartum and 
+##no - woman of reprodutive age
+data6 <- data6 %>%
+  dplyr::mutate(gest_puerp = ifelse(
+    gestante_SN == "yes",
+    1,
+    ifelse(gestante_SN == "no" & puerpera == 1, 2, 0))
+    )
+  
+data6$gest_puerp <- factor(data6$gest_puerp, 
+                     levels = c(0,1,2), 
+                     labels = c("no", "preg", "puerp"))
+```
+
+
+```{r, echo=TRUE, eval=TRUE, message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$gest_puerp,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for group variable", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+
+## 3.1 Characterization variables and comorbities
+
+The age information is in `NU_IDADE_N`. We create the age group variable (`faixa_et`) with categories: "<20", "20-34" and ">34".  
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#age group variable
+data6 <-
+  dplyr::mutate(data6, faixa_et = ifelse(
+    NU_IDADE_N <= 19,
+    "<20",
+    ifelse(NU_IDADE_N >= 20 & NU_IDADE_N <= 34, "20-34", ">34")
+  ))
+
+data6$faixa_et <- factor(data6$faixa_et,
+                         levels = c("<20", "20-34", ">34"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$faixa_et,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for group age", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+For ethnicity (`CS_RACA`), the categories are: 1-white; 2-black; 3-yellow; 4-brown; 5-Indigenous; 6-Ignored. 
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$CS_RACA,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for ethnicity", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+We will now label this variable, creating the variable `raca`, considering only the valid categories. 
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#ethnicity variable
+data6$raca <- factor(
+  data6$CS_RACA,
+  levels = c("1", "2", "3", "4", "5"),
+  labels = c("white", "black", "yellow", "brown", "indigenous")
+)
+```
+
+For education (`CS_ESCOL_N`), the categories are: 0-no education/illiterate; 1-fundamental 1st cycle; 2-fundamental 2nd cycle; 3-high school; 4-superior; 5-not applicable, 9-ignored.
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$CS_ESCOL_N,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for school", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+We will now label this variable, creating the variable `escol`, considering only the valid categories and considering the following categories: no education/illiterate (`CS_ESCOL_N` = 0), up to high school (`CS_ESCOL_N` = 1 or 2), high school (`CS_ESCOL_N` = 3) and higher education (`CS_ESCOL_N` = 4). 
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#school variable
+data6$escol <- factor(
+  data6$CS_ESCOL_N,
+  levels = c("0", "1", "2", "3", "4"),
+  labels = c(
+    "no education",
+    "up to high school",
+    "up to high school",
+    "high school",
+    "higher education"
+  )
+)
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$escol,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for school (new categories)", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+For comorbidities, the categories are: 1-yes, 2-no and 9-ignored. The comorbidities considered are: cardiopathy, hematology, liver disease, asthma, diabetes, neurological diseases, pneumopathy, immunosuppression, kidney disease, and obesity, and their frequency tables are presented below, respectively:
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$CARDIOPATI,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for cardiopathy", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$HEMATOLOGI,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for hematology", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$HEPATICA,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for liver disease", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$ASMA,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for asthma", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$DIABETES,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for diabetes", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$NEUROLOGIC,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for neurological diseases", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$PNEUMOPATI,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for pneumopathy", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$IMUNODEPRE,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for immunosuppression", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$RENAL,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for kidney disease", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$OBESIDADE,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for obesity", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+We will label in the following the comorbidities indicators, considering only the valid categories. 
+
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#cardiopathy
+data6$cardiopati <- factor(data6$CARDIOPATI,
+                           levels = c("1", "2"),
+                           labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#hematology
+data6$hematologi <- factor(data6$HEMATOLOGI,
+                           levels = c("1", "2"),
+                           labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#liver disease
+data6$hepatica <- factor(data6$HEPATICA,
+                         levels = c("1", "2"),
+                         labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#asthma
+data6$asma <- factor(data6$ASMA,
+                     levels = c("1", "2"),
+                     labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#diabetes
+data6$diabetes <- factor(data6$DIABETES,
+                         levels = c("1", "2"),
+                         labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#neurological diseases
+data6$neuro <- factor(data6$NEUROLOGIC,
+                      levels = c("1", "2"),
+                      labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#pneumopathy
+data6$pneumopati <- factor(data6$PNEUMOPATI,
+                           levels = c("1", "2"),
+                           labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#immunosuppression
+data6$imunodepre <- factor(data6$IMUNODEPRE,
+                           levels = c("1", "2"),
+                           labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#kidney disease
+data6$renal <- factor(data6$RENAL,
+                      levels = c("1", "2"),
+                      labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#obesity
+data6$obesidade <- factor(data6$OBESIDADE,
+                          levels = c("1", "2"),
+                          labels = c("yes", "no"))
+```
+
+One variable we want to analyze is the comorbities group (`gr_comorb`) with the categories: "none", "1 or 2", ">2". 
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE,}
+comorbidades <-
+  c(
+    "CARDIOPATI_aux",
+    "HEMATOLOGI_aux",
+    "HEPATICA_aux",
+    "ASMA_aux",
+    "DIABETES_aux",
+    "NEUROLOGIC_aux",
+    "PNEUMOPATI_aux",
+    "IMUNODEPRE_aux",
+    "RENAL_aux",
+    "OBESIDADE_aux"
+  )
+
+comorbidades1 <-
+  c(
+    "CARDIOPATI_aux1",
+    "HEMATOLOGI_aux1",
+    "HEPATICA_aux1",
+    "ASMA_aux1",
+    "DIABETES_aux1",
+    "NEUROLOGIC_aux1",
+    "PNEUMOPATI_aux1",
+    "IMUNODEPRE_aux1",
+    "RENAL_aux1",
+    "OBESIDADE_aux1"
+  )
+
+data6 <-
+  mutate(
+    data6,
+    CARDIOPATI_aux = CARDIOPATI,
+    HEMATOLOGI_aux = HEMATOLOGI,
+    HEPATICA_aux = HEPATICA,
+    ASMA_aux = ASMA,
+    DIABETES_aux = DIABETES,
+    NEUROLOGIC_aux = NEUROLOGIC,
+    PNEUMOPATI_aux = PNEUMOPATI,
+    IMUNODEPRE_aux = IMUNODEPRE,
+    RENAL_aux = RENAL,
+    OBESIDADE_aux = OBESIDADE
+  )
+
+data6 <-
+  mutate(
+    data6,
+    CARDIOPATI_aux1 = CARDIOPATI,
+    HEMATOLOGI_aux1 = HEMATOLOGI,
+    HEPATICA_aux1 = HEPATICA,
+    ASMA_aux1 = ASMA,
+    DIABETES_aux1 = DIABETES,
+    NEUROLOGIC_aux1 = NEUROLOGIC,
+    PNEUMOPATI_aux1 = PNEUMOPATI,
+    IMUNODEPRE_aux1 = IMUNODEPRE,
+    RENAL_aux1 = RENAL,
+    OBESIDADE_aux1 = OBESIDADE
+  )
+
+data6 <-  data6 %>%
+  dplyr::mutate_at(dplyr::all_of(comorbidades), function(x) {
+    dplyr::case_when(x == "1" ~ 1, TRUE ~ 0)
+  }) %>%
+  dplyr::mutate_at(dplyr::all_of(comorbidades1), function(x) {
+    dplyr::case_when(x == "1" ~ 1, x == "2" ~ 0, TRUE ~ NA_real_)
+  }) %>%
+  dplyr::mutate(
+    cont_comorb = CARDIOPATI_aux + HEMATOLOGI_aux +  HEPATICA_aux + ASMA_aux + 
+      DIABETES_aux + NEUROLOGIC_aux + PNEUMOPATI_aux + IMUNODEPRE_aux + 
+      RENAL_aux + OBESIDADE_aux
+  ) %>% 
+  dplyr::mutate(
+    num_comorb = dplyr::case_when(
+      is.na(CARDIOPATI_aux1) |
+        is.na(HEMATOLOGI_aux1) |
+        is.na(HEPATICA_aux1) |
+        is.na(ASMA_aux1) |
+        is.na(DIABETES_aux1) |
+        is.na(NEUROLOGIC_aux1) | is.na(PNEUMOPATI_aux1) |
+        is.na(IMUNODEPRE_aux1) |
+        is.na(RENAL_aux1) | is.na(OBESIDADE_aux1) ~ NA_real_,
+      TRUE ~ cont_comorb
+    ),
+    gr_comorb = dplyr::case_when(
+      num_comorb == 0 ~ 0,
+      num_comorb == 1 ~ 1,
+      num_comorb == 2 ~ 1,
+      num_comorb >  2 ~ 2,
+      TRUE ~ NA_real_
+    )
+  )
+
+# Comorbities group
+data6$gr_comorb <- factor(data6$gr_comorb,
+                          levels = c(0, 1, 2),
+                          labels = c("none", "1 or 2", ">2"))
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$gr_comorb,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for comorbities group", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+Another variable of interest is metabolic syndrome defined here if one has diabetes, heart disease and obesity. The variable name is `gr_sind_met` with the categories "yes" and "no". 
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE,}
+sind_met <-  c("CARDIOPATI_aux",
+               "DIABETES_aux", "OBESIDADE_aux")
+
+sind_met1 <-  c("CARDIOPATI_aux1",
+                "DIABETES_aux1",
+                "OBESIDADE_aux1")
+
+data6 <-
+  mutate(
+    data6,
+    CARDIOPATI_aux = CARDIOPATI,
+    DIABETES_aux = DIABETES,
+    OBESIDADE_aux = OBESIDADE
+  )
+
+data6 <-
+  mutate(
+    data6,
+    CARDIOPATI_aux1 = CARDIOPATI,
+    DIABETES_aux1 = DIABETES,
+    OBESIDADE_aux1 = OBESIDADE
+  )
+
+data6 <-  data6 %>%
+  mutate_at(all_of(sind_met), function(x) {
+    case_when(x == "1" ~ 1, TRUE ~ 0)
+  }) %>%
+  mutate_at(all_of(sind_met1), function(x) {
+    case_when(x == "1" ~ 1, x == "2" ~ 0, TRUE ~ NA_real_)
+  }) %>%
+  mutate(cont_sind_met = CARDIOPATI_aux + DIABETES_aux + OBESIDADE_aux) %>%
+  mutate(
+    num_sind_met = case_when(
+      is.na(CARDIOPATI_aux1) |
+        is.na(DIABETES_aux1) | is.na(OBESIDADE_aux1) ~ NA_real_,
+      TRUE ~ cont_sind_met
+    ),
+    gr_sind_met = case_when(
+      num_sind_met == 0 ~ 0,
+      num_sind_met == 1 ~ 0,
+      num_sind_met == 2 ~ 0,
+      num_sind_met == 3 ~ 1,
+      TRUE ~ NA_real_
+    )
+  )
+
+#metabolic syndrome indicator
+data6$gr_sind_met <- factor(data6$gr_sind_met,
+                            levels = c(1, 0),
+                            labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$gr_sind_met,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for metabolic syndrome", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+## 3.2 Symptom variables and indicator of hospital-acquired infection
+
+
+For the indicator of a case arising from an infection acquired in the hospital (`NOSOCOMIAL`), the categories are 1-yes, 2-no and 9-ignored.
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$NOSOCOMIAL,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>% 
+  knitr::kable(caption = "Frequency table for hospital-acquired infection", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+We will now label this variable, creating the variable `inf_inter`, considering only the valid categories.
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+data6$inf_inter <- factor(data6$NOSOCOMIAL,
+                          levels = c("1", "2"),
+                          labels = c("yes", "no"))
+```
+
+The symptoms are fever, cough, sore throat, dyspnoea, vomiting, abdominal pain, fatigue, respiratory distress, saturation, diarrhea, olfactory loss and loss of taste. In the original dataset they are `FEBRE`, `TOSSE`, `GARGANTA`,  `DISPNEIA`, `VOMITO`, `DOR_ABD`, `FADIGA`, `DESC_RESP`, `SATURACAO`, `DIARREIA`, `PERD_OLFT`, `PERD_PALA`, respectively. The categories of these variables are 1-yes, 2-no and 9-ignored.
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$FEBRE,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for fever indicator", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$TOSSE,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for cough indicator", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$GARGANTA,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for sore throat indicator", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$DISPNEIA,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for dyspnea indicator", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$VOMITO,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for vomiting", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$DOR_ABD,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for abdominal pain", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$FADIGA,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for fatigue", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$DESC_RESP,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for respiratory discomfort", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$SATURACAO,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for saturation", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$DIARREIA,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for diarrhea", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$PERD_OLFT,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for olfactory loss", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+ 
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+questionr::freq(
+  data6$PERD_PALA,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for loss of taste", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+We will now label the sympthoms variables by considering only the valid categories and creating the variable `febre`, `tosse`, `garganta`, `dispneia`, `vomito`, `dor_abd`, `fadiga`, `desc_resp`, `saturacao`, `diarreia`, `perd_olft` and `perd_pala` that represent fever, cough, sore throat, dyspnoea, vomiting, abdominal pain, fatigue, respiratory distress, saturation, diarrhea, olfactory loss and loss of taste, respectively. 
+ 
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#fever
+data6$febre <- factor(data6$FEBRE,
+                       levels = c("1", "2"),
+                       labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#cough
+data6$tosse <- factor(data6$TOSSE,
+                       levels = c("1", "2"),
+                       labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#sore throat
+data6$garganta <- factor(data6$GARGANTA,
+                          levels = c("1", "2"),
+                          labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#dyspnoea
+data6$dispneia <- factor(data6$DISPNEIA, 
+                     levels = c("1", "2"), 
+                     labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#vomiting
+data6$vomito <- factor(data6$VOMITO,
+                        levels = c("1", "2"),
+                        labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#abdominal pain
+data6$dor_abd <- factor(data6$DOR_ABD,
+                         levels = c("1", "2"),
+                         labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#fatigue
+data6$fadiga <- factor(data6$FADIGA,
+                        levels = c("1", "2"),
+                        labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#respiratory distress
+data6$desc_resp <- factor(data6$DESC_RESP,
+                           levels = c("1", "2"),
+                           labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#saturation
+data6$saturacao <- factor(data6$SATURACAO, 
+                     levels = c("1", "2"), 
+                     labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#diarrhea
+data6$diarreia <- factor(data6$DIARREIA, 
+                     levels = c("1", "2"), 
+                     labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#olfactory loss
+data6$perd_olft <- factor(data6$PERD_OLFT,
+                           levels = c("1", "2"),
+                           labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+#loss of taste
+data6$perd_pala <- factor(data6$PERD_PALA,
+                           levels = c("1", "2"),
+                           labels = c("yes", "no"))
+```
+
+Besides the indicator variable of each symptom, the variable group of symptoms has three categories: "none", "1 or 2" and ">2" (`gr_sintomas`) and another indicator variable of at least one symptom (`sintomas_SN`), with categories "yes" or "no". The symptoms are fever, cough, sore throat, dyspnoea, respiratory distress, saturation, diarrhea, vomiting, abdominal pain, fatigue, olfactory loss and loss of taste. 
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE,}
+sintomas <-
+  c(
+    "FEBRE_aux",
+    "TOSSE_aux",
+    "GARGANTA_aux",
+    "DISPNEIA_aux",
+    "DESC_RESP_aux",
+    "SATURACAO_aux",
+    "DIARREIA_aux",
+    "VOMITO_aux",
+    "DOR_ABD_aux",
+    "FADIGA_aux",
+    "PERD_OLFT_aux",
+    "PERD_PALA_aux"
+  )
+
+sintomas1 <-
+  c(
+    "FEBRE_aux1",
+    "TOSSE_aux1",
+    "GARGANTA_aux1",
+    "DISPNEIA_aux1",
+    "DESC_RESP_aux1",
+    "SATURACAO_aux1",
+    "DIARREIA_aux1",
+    "VOMITO_aux1",
+    "DOR_ABD_aux1",
+    "FADIGA_aux1",
+    "PERD_OLFT_aux1",
+    "PERD_PALA_aux1"
+  )
+
+data6 <-
+  mutate(
+    data6,
+    FEBRE_aux = FEBRE,
+    TOSSE_aux = TOSSE,
+    GARGANTA_aux = GARGANTA,
+    DISPNEIA_aux = DISPNEIA,
+    DESC_RESP_aux = DESC_RESP,
+    SATURACAO_aux = SATURACAO,
+    DIARREIA_aux = DIARREIA,
+    VOMITO_aux = VOMITO,
+    DOR_ABD_aux = DOR_ABD,
+    FADIGA_aux = FADIGA,
+    PERD_OLFT_aux = PERD_OLFT,
+    PERD_PALA_aux = PERD_PALA
+  )
+
+data6 <-
+  mutate(
+    data6,
+    FEBRE_aux1 = FEBRE,
+    TOSSE_aux1 = TOSSE,
+    GARGANTA_aux1 = GARGANTA,
+    DISPNEIA_aux1 = DISPNEIA,
+    DESC_RESP_aux1 = DESC_RESP,
+    SATURACAO_aux1 = SATURACAO,
+    DIARREIA_aux1 = DIARREIA,
+    VOMITO_aux1 = VOMITO,
+    DOR_ABD_aux1 = DOR_ABD,
+    FADIGA_aux1 = FADIGA,
+    PERD_OLFT_aux1 = PERD_OLFT,
+    PERD_PALA_aux1 = PERD_PALA
+  )
+
+data6 <-  data6 %>%
+  mutate_at(all_of(sintomas), function(x) {
+    case_when(x == "1" ~ 1, TRUE ~ 0)
+  }) %>%
+  mutate_at(all_of(sintomas1), function(x) {
+    case_when(x == "1" ~ 1, x == "2" ~ 0, TRUE ~ NA_real_)
+  }) %>%
+  mutate(
+    cont_sintomas = FEBRE_aux + TOSSE_aux +  GARGANTA_aux + DISPNEIA_aux + DESC_RESP_aux +
+      SATURACAO_aux + DIARREIA_aux + VOMITO_aux + DOR_ABD_aux + FADIGA_aux + 
+     PERD_OLFT_aux + PERD_PALA_aux
+  ) %>%
+  mutate(
+    num_sintomas = case_when(
+      is.na(FEBRE_aux1) |
+        is.na(TOSSE_aux1) |
+        is.na(GARGANTA_aux1) |
+        is.na(DISPNEIA_aux1) |
+        is.na(DESC_RESP_aux1) |
+        is.na(SATURACAO_aux1) | is.na(DIARREIA_aux1) |
+        is.na(VOMITO_aux1) |
+        is.na(DOR_ABD_aux1) |
+        is.na(FADIGA_aux1) |
+        is.na(PERD_OLFT_aux1) | is.na(PERD_PALA_aux1) ~ NA_real_,
+      TRUE ~ cont_sintomas
+    ),
+    gr_sintomas = case_when(
+      num_sintomas == 0 ~ 0,
+      num_sintomas == 1 ~ 1,
+      num_sintomas == 2 ~ 1,
+      num_sintomas >  2 ~ 2,
+      TRUE ~ NA_real_
+    ),
+    sintomas_SN = case_when(
+      gr_sintomas == 0 ~ 0,
+      gr_sintomas == 1 ~ 1,
+      gr_sintomas == 2 ~ 1,
+      TRUE ~ NA_real_
+    )
+  )
+
+#Symptom group 
+data6$gr_sintomas <- factor(
+  data6$gr_sintomas,
+  levels = c(0, 1, 2),
+  labels = c("none", "1 or 2", ">2")
+)
+
+#At least one symptom indicator 
+data6$sintomas_SN <- factor(data6$sintomas_SN,
+                             levels = c(1, 0),
+                             labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$gr_sintomas,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for symptom group", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$sintomas_SN,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for at least one symptom indicator", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+
+An indicator variable of at least one respiratory symptom (`sint_resp`) is created in the following.                
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE,}
+resp <-  c("DISPNEIA_aux", "DESC_RESP_aux", "SATURACAO_aux")
+
+resp1 <-  c("DISPNEIA_aux1", "DESC_RESP_aux1", "SATURACAO_aux1")
+
+data6 <-
+  mutate(
+    data6,
+    DISPNEIA_aux = DISPNEIA,
+    DESC_RESP_aux = DESC_RESP,
+    SATURACAO_aux = SATURACAO
+  )
+
+data6 <-
+  mutate(
+    data6,
+    DISPNEIA_aux1 = DISPNEIA,
+    DESC_RESP_aux1 = DESC_RESP,
+    SATURACAO_aux1 = SATURACAO
+  )
+
+data6 <-  data6 %>%
+  mutate_at(all_of(resp), function(x) {
+    case_when(x == "1" ~ 1, TRUE ~ 0)
+  }) %>%
+  mutate_at(all_of(resp1), function(x) {
+    case_when(x == "1" ~ 1, x == "2" ~ 0, TRUE ~ NA_real_)
+  }) %>%
+  mutate(cont_resp = DISPNEIA_aux + DESC_RESP_aux + SATURACAO_aux) %>%
+  mutate(
+    num_resp = case_when(
+      (cont_resp == 0) &
+        (
+          is.na(DISPNEIA_aux1) |
+            is.na(DESC_RESP_aux1) | is.na(SATURACAO_aux1)
+        ) ~ NA_real_,
+      TRUE ~ cont_resp
+    ),
+    sint_resp = case_when(
+      num_resp == 0 ~ 0,
+      num_resp == 1 ~ 1,
+      num_resp == 2 ~ 1,
+      num_resp == 3 ~ 1,
+      TRUE ~ NA_real_
+    )
+  )
+
+# Any respiratory symptom indicator
+data6$sint_resp <- factor(data6$sint_resp,
+                          levels = c(1, 0),
+                          labels = c("yes", "no"))
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$sint_resp,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for any respiratory symptom", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+The SARI (severe acute respiratory infection) indicator (`sari`) is "yes" if one has fever and cough or sore throat and respiratory distress or dyspnoea or saturation. The SARI without fever indicator (`sari_sfebre`) is what the name says.
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE,}
+data6 <-  data6 %>%
+  mutate(
+    sari = case_when(
+      FEBRE == "1" &
+        (TOSSE == "1" | GARGANTA == "1") &
+        (DESC_RESP == "1" |
+           DISPNEIA == "1" | SATURACAO == "1") ~ 1,
+      is.na(FEBRE_aux1) |
+        (is.na(TOSSE_aux1)  &
+           is.na(GARGANTA_aux1)) |
+        (
+          is.na(DESC_RESP_aux1) &
+            is.na(DISPNEIA_aux1) &  is.na(SATURACAO_aux1)
+        ) ~ NA_real_,
+      TRUE ~ 0
+    ),
+    sari_sfebre = case_when(
+      (TOSSE == "1" | GARGANTA == "1") &
+        (DESC_RESP == "1" | DISPNEIA == "1" | SATURACAO == "1") ~ 1,
+      (is.na(TOSSE_aux1)  &
+         is.na(GARGANTA_aux1)) |
+        (
+          is.na(DESC_RESP_aux1) &
+            is.na(DISPNEIA_aux1) &  is.na(SATURACAO_aux1)
+        ) ~ NA_real_,
+      TRUE ~ 0
+    )
+  )
+
+#SARI
+data6$sari <- factor(data6$sari,
+                      levels = c(1, 0),
+                      labels = c("yes", "no"))
+#SARI without fever
+data6$sari_sfebre <- factor(data6$sari_sfebre,
+                             levels = c(1, 0),
+                             labels = c("yes", "no"))
+```      
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$sari,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for SARI", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+questionr::freq(
+  data6$sari_sfebre,
+  cum = FALSE,
+  total = TRUE,
+  na.last = FALSE,
+  valid = FALSE
+) %>%
+  knitr::kable(caption = "Frequency table for SARI without fever", digits = 2) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+
+# 4. Propensity score matching (PSM)
+
+## 4.1 PSM for symptoms variables
+
+We considered as control variables: age, ethnicity, cardiopathy, asthma, diabetes, immunodepression and obesity.
+
+First, we present the difference result among the groups regarding the control variables before the PSM. We consider as "balanced" the cases with mean difference greater than 0.05. As we can see, for most categories of control variables the groups are not balanced before the matching.
+
+
+```{r, echo=FALSE,eval=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+data6 <- data6 %>% 
+  mutate(NU_IDADE_N = scale(NU_IDADE_N))
+``` 
+
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+bal.tab(gest_puerp ~ NU_IDADE_N + raca + cardiopati + asma + diabetes + imunodepre + obesidade, data = data6, estimand = "ATT", m.threshold = .05)
+``` 
+
+After PSM, all categories of control variables are balanced, with the exception of age (table below). Although the mean difference is greater than 0.05, it substantially decreased after the PSM: from 1.1385 to 0.2684.
+
+
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+w.out <-
+  weightit(
+    gest_puerp ~ NU_IDADE_N + raca + cardiopati + asma + diabetes + imunodepre + obesidade, 
+    use.mlogit = FALSE,
+    data = data6,
+    focal = "puerp",
+    method = "ps",
+    estimand = "ATT"
+  ) 
+``` 
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+cobalt::bal.tab(w.out, m.threshold = 0.05, disp.v.ratio = TRUE)
+``` 
+
+
+```{r, echo=FALSE, eval=FALSE,message=FALSE,warning =FALSE,error=FALSE}
+remove(w.out)
+w.out <-
+  weightit(
+    gest_puerp ~ NU_IDADE_N + raca + cardiopati + asma + diabetes + imunodepre + obesidade, 
+    use.mlogit = FALSE,
+    data = data6,
+    focal = "puerp",
+    method = "ebal",
+    estimand = "ATT"
+  ) 
+``` 
+
+```{r, echo=FALSE, eval=FALSE,message=FALSE,warning =FALSE,error=FALSE}
+cobalt::bal.tab(w.out, m.threshold = 0.05, disp.v.ratio = TRUE)
+``` 
+
+
+## 4.2 PSM for outcomes
+
+For the analysis of the outcomes, only the cases that we know whether it is a case of death or cure are selected.
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+data6 <-
+  data6 %>% mutate(
+    evolucao = case_when(
+      EVOLUCAO == 1 ~ "cure",
+      EVOLUCAO == 2 ~ "death",
+      EVOLUCAO == 3 ~ "death",
+      TRUE ~ "in progress"
+    )
+  )
+```
+
+Now we exclude cases "in progress". 
+
+```{r, echo=TRUE, message=FALSE, warning =FALSE, error=FALSE}
+data7 <- filter(data6, evolucao != "in progress")
+
+data7$evolucao <- factor(
+  data7$evolucao,
+  levels = c("death", "cure"),
+  labels = c("death", "cure")
+)
+```
+
+In this propensity score, we considered as control variables: 
+ age, ethnicity, school, Brazilian Federative Unit, cardiopathy, asthma, diabetes, immunodepression, obesity and respiratory symptoms.
+
+We present below the difference result among the groups regarding the control variables before the PSM. We consider as "balanced" the cases with mean difference greater than 0.05. As we can see, the groups are not balanced before the matching for many categories of the control variables.
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+bal.tab(gest_puerp ~ NU_IDADE_N + raca + escol + SG_UF + cardiopati + asma + 
+                    diabetes + imunodepre + obesidade + sint_resp, data = data7, estimand = "ATT", m.threshold = 0.05)
+``` 
+
+After PSM, all categories of control variables are balanced, with the exception of age and the "up to high school" category (table below).  Despite this, we can see that the mean difference value for the "up to high school" category (value of 0.0502) is very close to the threshold and for age, the mean difference is substantially decreased after the PSM: from 1.1475 to 0.3693.
+
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE}
+remove(w.out)
+
+w.out <- weightit(gest_puerp ~ NU_IDADE_N + raca + escol + SG_UF + cardiopati + asma + 
+                    diabetes + imunodepre + obesidade + sint_resp, use.mlogit = FALSE, 
+                  data = data7, focal = "puerp", method = "ps", estimand = "ATT")
+ 
+```
+
+
+```{r, echo=TRUE,message=FALSE,warning =FALSE,error=FALSE,}
+cobalt::bal.tab(w.out, m.threshold = 0.05, disp.v.ratio = TRUE)
+``` 
